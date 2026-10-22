@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WTP Evaluation — Comparative Method of Valuation (CMV)</title>
+    <style>
+        :root {
+            --primary-color: #111111;
+            --accent-color: #990000;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-color: #1e293b;
+            --text-muted: #64748b;
+            --border-color: #e2e8f0;
+            --font-serif: 'Playfair Display', Georgia, Cambria, "Times New Roman", Times, serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-sans);
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 20px;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        /* TOP METADATA BAR */
+        .top-meta-bar {
+            max-width: 760px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .meta-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .meta-input-group {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .meta-input-group label {
+            font-weight: 600;
+        }
+
+        .meta-input-group input, .meta-input-group select {
+            padding: 4px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 0.8rem;
+            background: var(--card-bg);
+            color: var(--text-color);
+            outline: none;
+        }
+
+        .btn-toggle-theme {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            padding: 4px 12px;
+            border-radius: 16px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-color);
+            transition: background 0.2s;
+        }
+
+        .btn-toggle-theme:hover {
+            background: var(--border-color);
+        }
+
+        /* MAIN CARD */
+        .valuation-wrapper {
+            max-width: 760px;
+            width: 100%;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 45px 40px;
+            box-shadow: 0 15px 35px -5px rgba(0, 0, 0, 0.05), 0 5px 15px rgba(0, 0, 0, 0.03);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* HEADER */
+        .cmv-header {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .cmv-framework-badge {
+            display: inline-block;
+            background: #fee2e2;
+            color: #991b1b;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 16px;
+            margin-bottom: 12px;
+        }
+
+        .cmv-header h1 {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 12px;
+            line-height: 1.25;
+        }
+
+        .cmv-instructions {
+            color: var(--text-muted);
+            font-size: 0.98rem;
+            line-height: 1.55;
+            max-width: 620px;
+            margin: 0 auto;
+        }
+
+        /* LEVELS CONTAINER */
+        .cmv-levels-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 26px;
+        }
+
+        .cmv-level-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background: var(--card-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            padding: 18px 20px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            user-select: none;
+            position: relative;
+        }
+
+        .cmv-level-card:hover {
+            border-color: #94a3b8;
+            background: #f8fafc;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+        }
+
+        .cmv-level-card.selected {
+            border-color: var(--accent-color);
+            background: #fffdfa;
+            box-shadow: 0 0 0 1px var(--accent-color), 0 8px 20px rgba(153, 0, 0, 0.08);
+        }
+
+        .cmv-radio-col {
+            padding-top: 3px;
+        }
+
+        .cmv-radio-col input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            accent-color: var(--accent-color);
+            cursor: pointer;
+            margin: 0;
+        }
+
+        .cmv-content-col {
+            flex: 1;
+        }
+
+        .cmv-level-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 5px;
+        }
+
+        .cmv-level-title {
+            font-size: 1.12rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .cmv-level-cost-badge {
+            font-size: 0.85rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            background: rgba(153, 0, 0, 0.08);
+            border: 1px solid rgba(153, 0, 0, 0.2);
+            padding: 4px 12px;
+            border-radius: 14px;
+            white-space: nowrap;
+        }
+
+        .cmv-level-cost-badge.level-0-cost {
+            color: #64748b;
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .cmv-level-friction-tag {
+            display: inline-block;
+            font-size: 0.74rem;
+            font-weight: 600;
+            color: #475569;
+            background: #f1f5f9;
+            padding: 3px 10px;
+            border-radius: 4px;
+            margin-bottom: 8px;
+        }
+
+        .cmv-level-desc {
+            font-size: 0.92rem;
+            color: #475569;
+            line-height: 1.5;
+            margin: 0;
+        }
+
+        /* SELECTION PREVIEW BAR */
+        .selection-preview-bar {
+            background: #f1f5f9;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 18px;
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .selection-preview-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .selection-preview-value {
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        /* ACTIONS */
+        .cmv-actions {
+            margin-top: 10px;
+        }
+
+        .btn-confirm-wtp {
+            width: 100%;
+            background: var(--primary-color);
+            color: #ffffff;
+            border: none;
+            padding: 18px 28px;
+            font-size: 1.08rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border-radius: 35px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .btn-confirm-wtp:hover:not(:disabled) {
+            background: var(--accent-color);
+            box-shadow: 0 6px 18px rgba(153, 0, 0, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .btn-confirm-wtp:active:not(:disabled) {
+            transform: translateY(0);
+        }
+
+        .btn-confirm-wtp:disabled {
+            background: #cbd5e1;
+            color: #94a3b8;
+            cursor: not-allowed;
+            box-shadow: none;
+            opacity: 0.7;
+        }
+
+        /* CONFIRMATION STATE */
+        .state-panel {
+            display: none;
+        }
+
+        .state-panel.active {
+            display: block;
+        }
+
+        .confirmation-view {
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .success-badge-icon {
+            width: 72px;
+            height: 72px;
+            background: #dcfce7;
+            color: #16a34a;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px auto;
+            font-size: 2.2rem;
+            font-weight: 800;
+        }
+
+        .confirmation-view h2 {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            margin-bottom: 10px;
+        }
+
+        .confirmation-sub {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 28px;
+        }
+
+        .summary-table-box {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 20px;
+            border-bottom: 1px solid #edf2f7;
+            font-size: 0.92rem;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .summary-row.highlight {
+            background: #f1f5f9;
+            font-weight: 700;
+        }
+
+        .summary-label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .summary-value {
+            color: var(--primary-color);
+            font-weight: 600;
+            text-align: right;
+        }
+
+        .confirmation-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn-download-again {
+            background: var(--accent-color);
+            color: #fff;
+            border: none;
+            padding: 15px 24px;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 0.98rem;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.2s;
+        }
+
+        .btn-download-again:hover {
+            background: #7a0000;
+        }
+
+        .btn-reset {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-reset:hover {
+            background: #f1f5f9;
+            color: var(--text-color);
+        }
+
+        /* NIGHT MODE */
+        body.night-mode {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --border-color: #334155;
+            --primary-color: #f8fafc;
+        }
+
+        body.night-mode .cmv-level-card {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        body.night-mode .cmv-level-card:hover {
+            background: #243247;
+            border-color: #475569;
+        }
+
+        body.night-mode .cmv-level-card.selected {
+            border-color: var(--accent-color);
+            background: #27272a;
+        }
+
+        body.night-mode .cmv-level-title {
+            color: #f8fafc;
+        }
+
+        body.night-mode .cmv-level-desc {
+            color: #94a3b8;
+        }
+
+        body.night-mode .cmv-level-friction-tag {
+            background: #334155;
+            color: #cbd5e1;
+        }
+
+        body.night-mode .cmv-level-cost-badge.level-0-cost {
+            background: #334155;
+            color: #94a3b8;
+            border-color: #475569;
+        }
+
+        body.night-mode .selection-preview-bar {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        body.night-mode .summary-table-box {
+            background: #1e293b;
+            border-color: #334155;
+        }
+
+        body.night-mode .summary-row {
+            border-color: #334155;
+        }
+
+        body.night-mode .summary-row.highlight {
+            background: #243247;
+        }
+
+        body.night-mode .btn-confirm-wtp:disabled {
+            background: #334155;
+            color: #64748b;
+        }
+
+        body.night-mode .success-badge-icon {
+            background: #14532d;
+            color: #86efac;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- TOP METADATA & CONFIG BAR -->
+    <div class="top-meta-bar">
+        <div class="meta-controls">
+            <div class="meta-input-group">
+                <label for="subj-id-input">Subject ID:</label>
+                <input type="text" id="subj-id-input" value="SUBJ-8841" style="width: 110px;">
+            </div>
+            <div class="meta-input-group">
+                <label for="condition-select">Condition:</label>
+                <select id="condition-select">
+                    <option value="Banner">Condition B: Video Banner Ads</option>
+                    <option value="Pop-up">Condition A: Variable Pop-Up Ads</option>
+                    <option value="General_CMV">General CMV Valuation</option>
+                </select>
+            </div>
+        </div>
+        <button class="btn-toggle-theme" onclick="toggleTheme()">Dark / Light Mode</button>
+    </div>
+
+    <!-- MAIN EVALUATION CARD CONTAINER -->
+    <div class="valuation-wrapper">
+
+        <!-- EVALUATION FORM STATE -->
+        <div id="state-evaluation" class="state-panel active">
+            <div class="cmv-header">
+                <span class="cmv-framework-badge">Valuation Protocol (CMV)</span>
+                <h1>Valuation of Strategic Inconvenience Relief</h1>
+                <p class="cmv-instructions">
+                    If you could remove the distractions that interrupted your reading in exchange for a portion of your quiz reward, what percentage would you give up to get rid of them?
+                </p>
+            </div>
+
+            <!-- 4 INTERACTIVE CMV LEVELS -->
+            <div class="cmv-levels-grid" id="cmv-levels-group" role="radiogroup" aria-label="Valuation of Inconvenience Relief Levels">
+                
+                <!-- Level 0 -->
+                <div class="cmv-level-card" data-level="0" onclick="selectWtpLevel(0)">
+                    <div class="cmv-radio-col">
+                        <input type="radio" name="wtp_cmv_level" id="cmv-level-0" value="0" tabindex="-1">
+                    </div>
+                    <div class="cmv-content-col">
+                        <div class="cmv-level-top-row">
+                            <span class="cmv-level-title">Level 0: No Upgrade, Continue with advertisement</span>
+                            <span class="cmv-level-cost-badge level-0-cost">0% Cost / 0 Tokens</span>
+                        </div>
+                        <div class="cmv-level-friction-tag">Baseline Conditions Retained</div>
+                        <p class="cmv-level-desc">Retained full friction (unskippable interstitial videos, pop-ups, and persistent display banners).</p>
+                    </div>
+                </div>
+
+                <!-- Level 1 -->
+                <div class="cmv-level-card" data-level="1" onclick="selectWtpLevel(1)">
+                    <div class="cmv-radio-col">
+                        <input type="radio" name="wtp_cmv_level" id="cmv-level-1" value="1" tabindex="-1">
+                    </div>
+                    <div class="cmv-content-col">
+                        <div class="cmv-level-top-row">
+                            <span class="cmv-level-title">Level 1: Partial Visual Relief</span>
+                            <span class="cmv-level-cost-badge">25% Cost / 10 Tokens</span>
+                        </div>
+                        <div class="cmv-level-friction-tag">Bottom or Lateral Banner Occlusion Relief</div>
+                        <p class="cmv-level-desc">Eliminated bottom or lateral banner occlusions.</p>
+                    </div>
+                </div>
+
+                <!-- Level 2 -->
+                <div class="cmv-level-card" data-level="2" onclick="selectWtpLevel(2)">
+                    <div class="cmv-radio-col">
+                        <input type="radio" name="wtp_cmv_level" id="cmv-level-2" value="2" tabindex="-1">
+                    </div>
+                    <div class="cmv-content-col">
+                        <div class="cmv-level-top-row">
+                            <span class="cmv-level-title">Level 2: Functional Interruption Relief</span>
+                            <span class="cmv-level-cost-badge">50% Cost / 20 Tokens</span>
+                        </div>
+                        <div class="cmv-level-friction-tag">Pop-Up Ads Relief</div>
+                        <p class="cmv-level-desc">Eliminated pop-up ads.</p>
+                    </div>
+                </div>
+
+                <!-- Level 3 -->
+                <div class="cmv-level-card" data-level="3" onclick="selectWtpLevel(3)">
+                    <div class="cmv-radio-col">
+                        <input type="radio" name="wtp_cmv_level" id="cmv-level-3" value="3" tabindex="-1">
+                    </div>
+                    <div class="cmv-content-col">
+                        <div class="cmv-level-top-row">
+                            <span class="cmv-level-title">Level 3: Full Premium Experience</span>
+                            <span class="cmv-level-cost-badge">100% Cost / 50 Tokens</span>
+                        </div>
+                        <div class="cmv-level-friction-tag">Complete Friction Removal</div>
+                        <p class="cmv-level-desc">Completely eliminated all ads and interruptions for continuous reading flow (including non-skippable video ads).</p>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- REAL-TIME SELECTION PREVIEW BAR -->
+            <div class="selection-preview-bar">
+                <span class="selection-preview-label">Active Choice:</span>
+                <span class="selection-preview-value" id="preview-level-text">None selected — please click a level above</span>
+            </div>
+
+            <!-- CONFIRMATION & DOWNLOAD BUTTON -->
+            <div class="cmv-actions">
+                <button id="btn-confirm-wtp" class="btn-confirm-wtp" disabled onclick="confirmSelectionAndDownload()">
+                    Confirm Selection & Download Data
+                </button>
+            </div>
+        </div>
+
+        <!-- CONFIRMATION / SUMMARY STATE -->
+        <div id="state-confirmation" class="state-panel">
+            <div class="confirmation-view">
+                <div class="success-badge-icon">✓</div>
+                <h2>Valuation Confirmed & Data Exported</h2>
+                <p class="confirmation-sub">Your strategic inconvenience relief choice has been captured and downloaded.</p>
+
+                <div class="summary-table-box">
+                    <div class="summary-row">
+                        <span class="summary-label">Subject ID</span>
+                        <span class="summary-value" id="res-subj-id">—</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Condition ID</span>
+                        <span class="summary-value" id="res-condition-id">—</span>
+                    </div>
+                    <div class="summary-row highlight">
+                        <span class="summary-label">Selected Level</span>
+                        <span class="summary-value" id="res-level-name" style="color: var(--accent-color);">—</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Cost Commitment</span>
+                        <span class="summary-value" id="res-cost-tokens">—</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Cost Percentage</span>
+                        <span class="summary-value" id="res-cost-percent">—</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Friction Removed</span>
+                        <span class="summary-value" id="res-friction-tag">—</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Decision Latency</span>
+                        <span class="summary-value" id="res-decision-latency">—</span>
+                    </div>
+                    <div class="summary-row">
+                        <span class="summary-label">Telemetry Status</span>
+                        <span class="summary-value" style="color: #16a34a;">Downloaded (.JSON)</span>
+                    </div>
+                </div>
+
+                <div class="confirmation-actions">
+                    <button class="btn-download-again" onclick="downloadTelemetryFile()">Download Telemetry JSON Again ↓</button>
+                    <button class="btn-reset" onclick="resetFormForNewParticipant()">Test Another Selection / Reset ↺</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // GLOBAL TELEMETRY ENGINE & STATE
+        const LEVEL_METADATA = [
+            {
+                level: 0,
+                title: "Level 0: No Upgrade, Continue with advertisement",
+                costPercent: "0% Cost",
+                tokens: 0,
+                tag: "Baseline Conditions Retained",
+                desc: "Retained full friction (unskippable interstitial videos, pop-ups, and persistent display banners)."
+            },
+            {
+                level: 1,
+                title: "Level 1: Partial Visual Relief",
+                costPercent: "25% Cost",
+                tokens: 10,
+                tag: "Bottom or Lateral Banner Occlusion Relief",
+                desc: "Eliminated bottom or lateral banner occlusions."
+            },
+            {
+                level: 2,
+                title: "Level 2: Functional Interruption Relief",
+                costPercent: "50% Cost",
+                tokens: 20,
+                tag: "Pop-Up Ads Relief",
+                desc: "Eliminated pop-up ads."
+            },
+            {
+                level: 3,
+                title: "Level 3: Full Premium Experience",
+                costPercent: "100% Cost",
+                tokens: 50,
+                tag: "Complete Friction Removal",
+                desc: "Completely eliminated all ads and interruptions for continuous reading flow (including non-skippable video ads)."
+            }
+        ];
+
+        let selectedWtpLevel = null;
+        let screenLoadedTs = Date.now();
+        let confirmedTs = null;
+        let decisionLatencyMs = null;
+        let interactionLog = [];
+        let exportedPayload = null;
+
+        // Auto-assign random Subject ID if not specified
+        window.addEventListener('DOMContentLoaded', () => {
+            const subjInput = document.getElementById('subj-id-input');
+            if (subjInput && (!subjInput.value || subjInput.value === 'SUBJ-8841')) {
+                subjInput.value = 'SUBJ-' + Math.floor(1000 + Math.random() * 9000);
+            }
+            screenLoadedTs = Date.now();
+            logInteraction('screen_loaded', { loaded_ts: screenLoadedTs });
+        });
+
+        function logInteraction(action, meta = {}) {
+            interactionLog.push({
+                action: action,
+                timestamp: Date.now(),
+                relative_sec: parseFloat(((Date.now() - screenLoadedTs) / 1000).toFixed(2)),
+                metadata: meta
+            });
+        }
+
+        // LEVEL SELECTION HANDLER
+        function selectWtpLevel(levelIndex) {
+            selectedWtpLevel = levelIndex;
+            const levelInfo = LEVEL_METADATA[levelIndex];
+
+            // Update UI card classes & radio inputs
+            document.querySelectorAll('.cmv-level-card').forEach(card => {
+                const t = parseInt(card.getAttribute('data-level'), 10);
+                const radio = card.querySelector('input[type="radio"]');
+                if (t === levelIndex) {
+                    card.classList.add('selected');
+                    if (radio) radio.checked = true;
+                } else {
+                    card.classList.remove('selected');
+                    if (radio) radio.checked = false;
+                }
+            });
+
+            // Update Preview Text
+            const previewEl = document.getElementById('preview-level-text');
+            if (previewEl) {
+                previewEl.textContent = `${levelInfo.title} — ${levelInfo.costPercent} (${levelInfo.tokens} Tokens) [${levelInfo.tag}]`;
+            }
+
+            // Enable confirmation button
+            const confirmBtn = document.getElementById('btn-confirm-wtp');
+            if (confirmBtn) {
+                confirmBtn.disabled = false;
+            }
+
+            logInteraction('level_selected', {
+                level: levelIndex,
+                title: levelInfo.title,
+                tokens: levelInfo.tokens,
+                costPercent: levelInfo.costPercent
+            });
+        }
+
+        // CONFIRMATION & AUTOMATIC DOWNLOAD ACTION
+        function confirmSelectionAndDownload() {
+            if (selectedWtpLevel === null) return;
+
+            confirmedTs = Date.now();
+            decisionLatencyMs = confirmedTs - screenLoadedTs;
+            const decisionLatencySec = parseFloat((decisionLatencyMs / 1000).toFixed(2));
+
+            const levelInfo = LEVEL_METADATA[selectedWtpLevel];
+            const subjId = document.getElementById('subj-id-input').value.trim() || 'ANONYMOUS';
+            const conditionId = document.getElementById('condition-select').value;
+
+            logInteraction('level_confirmed', {
+                level: selectedWtpLevel,
+                tokens: levelInfo.tokens,
+                latency_ms: decisionLatencyMs
+            });
+
+            // Assemble Comprehensive Telemetry Payload
+            exportedPayload = {
+                experiment_name: "Willingness-to-Pay (WTP) Strategic Inconvenience Relief Evaluation",
+                methodological_framework: "Comparative Method of Valuation (CMV)",
+                condition_id: conditionId,
+                subject_id: subjId,
+                
+                // Primary CMV Points Selected
+                wtp_level_selected: selectedWtpLevel,
+                wtp_level_name: levelInfo.title,
+                wtp_level_cost_tokens: levelInfo.tokens,
+                wtp_level_cost_percentage: levelInfo.costPercent,
+                friction_relief_category: levelInfo.tag,
+                level_description: levelInfo.desc,
+                
+                // Temporal Metrics
+                wtp_screen_loaded_ts: screenLoadedTs,
+                wtp_confirmed_ts: confirmedTs,
+                wtp_decision_latency_ms: decisionLatencyMs,
+                wtp_decision_latency_seconds: decisionLatencySec,
+                
+                // Session Metadata
+                session_iso_datetime: new Date().toISOString(),
+                user_agent: navigator.userAgent,
+                interaction_history: interactionLog
+            };
+
+            // Trigger Automatic Download
+            downloadTelemetryFile();
+
+            // Populate Results Screen
+            document.getElementById('res-subj-id').textContent = subjId;
+            document.getElementById('res-condition-id').textContent = conditionId;
+            document.getElementById('res-level-name').textContent = levelInfo.title;
+            document.getElementById('res-cost-tokens').textContent = `${levelInfo.tokens} Tokens`;
+            document.getElementById('res-cost-percent').textContent = levelInfo.costPercent;
+            document.getElementById('res-friction-tag').textContent = levelInfo.tag;
+            document.getElementById('res-decision-latency').textContent = `${decisionLatencySec} seconds (${decisionLatencyMs} ms)`;
+
+            // Switch to Confirmation View
+            document.getElementById('state-evaluation').classList.remove('active');
+            document.getElementById('state-confirmation').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // DOWNLOAD UTILITY
+        function downloadTelemetryFile() {
+            if (!exportedPayload) return;
+
+            const payloadStr = JSON.stringify(exportedPayload, null, 4);
+            const blob = new Blob([payloadStr], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const downloadAnchor = document.createElement('a');
+
+            const timestamp = Date.now();
+            const filename = `WTP_CMV_SubjectData_${exportedPayload.subject_id}_Level${exportedPayload.wtp_level_selected}_${timestamp}.json`;
+
+            downloadAnchor.setAttribute("href", url);
+            downloadAnchor.setAttribute("download", filename);
+            document.body.appendChild(downloadAnchor);
+            downloadAnchor.click();
+            document.body.removeChild(downloadAnchor);
+            URL.revokeObjectURL(url);
+        }
+
+        // RESET FUNCTION FOR TESTING MULTIPLE SUBJECTS
+        function resetFormForNewParticipant() {
+            selectedWtpLevel = null;
+            confirmedTs = null;
+            decisionLatencyMs = null;
+            exportedPayload = null;
+            interactionLog = [];
+            screenLoadedTs = Date.now();
+
+            // Deselect all cards
+            document.querySelectorAll('.cmv-level-card').forEach(card => {
+                card.classList.remove('selected');
+                const radio = card.querySelector('input[type="radio"]');
+                if (radio) radio.checked = false;
+            });
+
+            // Disable confirm button
+            const confirmBtn = document.getElementById('btn-confirm-wtp');
+            if (confirmBtn) confirmBtn.disabled = true;
+
+            // Reset preview
+            document.getElementById('preview-level-text').textContent = "None selected — please click a level above";
+
+            // Generate new Subject ID
+            const subjInput = document.getElementById('subj-id-input');
+            if (subjInput) {
+                subjInput.value = 'SUBJ-' + Math.floor(1000 + Math.random() * 9000);
+            }
+
+            // Switch back to evaluation view
+            document.getElementById('state-confirmation').classList.remove('active');
+            document.getElementById('state-evaluation').classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            logInteraction('screen_reset', { loaded_ts: screenLoadedTs });
+        }
+
+        // THEME TOGGLE
+        function toggleTheme() {
+            document.body.classList.toggle('night-mode');
+        }
+    </script>
+</body>
+</html>

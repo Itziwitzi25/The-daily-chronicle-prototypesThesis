@@ -1,0 +1,2257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Daily Chronicle | Premium Digital Edition</title>
+    <style>
+        /* ==========================================================================
+           PREMIUM EDITORIAL DESIGN SYSTEM
+           ========================================================================== */
+        :root {
+            --primary-color: #111111;
+            --accent-color: #990000;
+            --bg-color: #ffffff;
+            --text-color: #222222;
+            --font-serif: "Georgia", "Times New Roman", serif;
+            --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: var(--font-sans);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        #app-container { max-width: 1100px; margin: 0 auto; padding: 20px; }
+
+        .editorial-header { 
+            position: sticky; 
+            top: 0; 
+            z-index: 1000; 
+            background-color: var(--bg-color); 
+            border-bottom: 4px solid var(--primary-color); 
+            margin-bottom: 30px; 
+            text-align: center; 
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .portal-logo { font-family: var(--font-serif); font-size: 3.5rem; font-weight: 900; letter-spacing: -1px; cursor: pointer; text-transform: uppercase; }
+        .portal-tagline { font-family: var(--font-serif); font-style: italic; font-size: 0.95rem; color: #555; margin-top: 5px; }
+
+        .editorial-nav ul { display: flex; justify-content: center; list-style: none; border-top: 1px solid #ccc; margin-top: 15px; padding: 10px 0; }
+        .editorial-nav li { margin: 0 15px; font-size: 0.85rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; }
+        .editorial-nav li:hover { color: var(--accent-color); }
+
+        /* STICKY SCROLLED STATE: Smoothly condensed so it stays visible while reading */
+        .editorial-header.is-sticky {
+            padding: 4px 0 6px 0;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            animation: slideDownHeader 0.3s ease forwards;
+        }
+        @keyframes slideDownHeader {
+            from { transform: translateY(-8px); }
+            to { transform: translateY(0); }
+        }
+        .editorial-header.is-sticky .header-top-bar {
+            padding: 2px 0;
+        }
+        .editorial-header.is-sticky .portal-logo {
+            font-size: 1.85rem;
+            transition: font-size 0.3s ease;
+        }
+        .editorial-header.is-sticky .portal-tagline {
+            display: none;
+        }
+        .editorial-header.is-sticky .editorial-nav ul {
+            margin-top: 4px;
+            padding: 5px 0;
+        }
+        .editorial-header.is-sticky .editorial-nav li {
+            font-size: 0.78rem;
+        }
+
+        /* HERO LAYOUT */
+        .hero-section { padding: 40px 0; max-width: 850px; margin: 0 auto; text-align: center; }
+        .hero-badge { color: var(--accent-color); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+        .main-headline { font-family: var(--font-serif); font-size: 2.8rem; line-height: 1.15; cursor: pointer; margin-bottom: 15px; }
+        .article-excerpt { font-family: var(--font-serif); font-size: 1.2rem; color: #444; line-height: 1.4; }
+        .double-divider { border: none; border-top: 1px solid #111; border-bottom: 1px solid #111; height: 4px; margin: 20px 0; }
+        .thin-divider { border: none; border-top: 1px solid #ccc; margin: 15px 0; }
+
+        /* TYPOGRAPHY */
+        .long-form-container { max-width: 760px; margin: 0 auto; padding: 20px 0; }
+        .article-header h1 { font-family: var(--font-serif); font-size: 2.6rem; line-height: 1.2; margin-bottom: 15px; }
+        .article-meta { font-size: 0.85rem; color: #666; text-transform: uppercase; margin-bottom: 10px; }
+        
+        .apa-citation-header { background: #fdf6f6; border-left: 4px solid var(--accent-color); padding: 12px 16px; font-size: 0.85rem; color: #555; margin-bottom: 20px; line-height: 1.4; }
+
+        .article-body-text p { font-family: var(--font-serif); font-size: 1.25rem; line-height: 1.65; margin-bottom: 1.5rem; color: #111; text-align: justify; }
+        .article-body-text h2 { font-family: var(--font-serif); font-size: 1.75rem; margin: 2.5rem 0 1.2rem 0; color: #111; border-left: 4px solid var(--accent-color); padding-left: 15px; }
+        .article-body-text ul { margin-left: 2rem; margin-bottom: 1.5rem; font-family: var(--font-serif); font-size: 1.2rem; color: #222; }
+        .article-body-text li { margin-bottom: 0.5rem; }
+        .article-body-text blockquote { font-family: var(--font-serif); font-style: italic; font-size: 1.4rem; margin: 2rem 2rem; padding-left: 20px; border-left: 3px solid #666; color: #444; }
+
+        .apa-references-footer { margin-top: 4rem; padding-top: 2rem; border-top: 1px solid #ddd; font-size: 0.85rem; color: #555; line-height: 1.5; }
+        .apa-references-footer h3 { font-family: var(--font-sans); text-transform: uppercase; font-size: 0.9rem; letter-spacing: 1px; margin-bottom: 1rem; color: #111; }
+        .apa-entry { padding-left: 2rem; text-indent: -2rem; margin-bottom: 0.75rem; text-align: justify; }
+
+        /* IMAGES */
+        .editorial-image-wrapper { margin: 2.5rem 0; background: #f4f4f4; border: 1px solid #ddd; padding: 10px; }
+        .editorial-image-graphic { width: 100%; height: 320px; display: flex; align-items: center; justify-content: center; font-family: var(--font-sans); font-size: 0.9rem; font-weight: bold; color: #666; text-transform: uppercase; background-color: #e2e8f0; border: 2px dashed #cbd5e1; padding: 20px; text-align: center; }
+        .editorial-image-caption { margin-top: 8px; font-size: 0.8rem; color: #555; font-family: var(--font-serif); font-style: italic; line-height: 1.3; }
+
+        .premium-badge { background: var(--accent-color); color: white; text-transform: uppercase; font-size: 0.75rem; padding: 4px 12px; font-weight: 700; letter-spacing: 1px; display: inline-block; margin-bottom: 15px; }
+
+        /* HEADER PREMIUM CTA BUTTON */
+        .btn-header-premium {
+            background: var(--accent-color); color: #fff; border: none; padding: 10px 22px;
+            font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; border-radius: 20px !important;
+        }
+        .btn-header-premium:hover { background: #111111; }
+        .header-top-bar { display: flex; justify-content: flex-end; padding: 10px 0; }
+
+        /* HARD PAYWALL OPTIONS */
+        .paywall-overlay { background: #f8f9fa; border: 3px solid #111; padding: 50px 40px; max-width: 650px; margin: 50px auto; box-shadow: 0 15px 30px rgba(0,0,0,0.05); text-align: center; }
+        .paywall-card h2 { font-family: var(--font-serif); font-size: 2.2rem; margin-bottom: 15px; }
+        .paywall-instructions { color: #555; font-size: 1.05rem; margin-bottom: 30px; line-height: 1.5; }
+        .white-box-container { background: white; border: 1px solid #ddd; padding: 20px; margin-bottom: 35px; }
+        .slider-label { display: block; font-size: 0.95rem; margin-bottom: 15px; color: #333; }
+        #wtp-slider { width: 100%; accent-color: var(--accent-color); cursor: pointer; }
+        .slider-value-display { font-size: 1.6rem; font-weight: 800; color: var(--accent-color); margin-top: 10px; }
+        .slider-scale { display: flex; justify-content: space-between; font-size: 0.75rem; color: #888; }
+        
+        .paywall-actions { display: flex; flex-direction: column; gap: 12px; }
+        
+        .btn-subscribe { background: var(--primary-color); color: white; border: none; padding: 16px; font-size: 1.1rem; font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; border-radius: 30px !important; }
+        .btn-subscribe:hover { background: var(--accent-color); }
+        
+        .btn-exit { 
+            background: transparent !important; 
+            border: 1px solid #666666 !important; 
+            color: #666666 !important; 
+            text-decoration: none !important; 
+            font-size: 0.9rem; 
+            cursor: pointer; 
+            padding: 10px 20px !important; 
+            border-radius: 24px !important; 
+            display: inline-block; 
+            transition: all 0.2s;
+        }
+        .btn-exit:hover {
+            background: #e5e7eb !important;
+            color: #111111 !important;
+        }
+
+        .hidden { display: none !important; }
+        body.no-scroll { overflow: hidden !important; height: 100vh !important; }
+
+        /* ===== THREE-COLUMN LAYOUT ===== */
+        #app-container { max-width: 1280px; margin: 0 auto; padding: 20px; }
+
+        .page-layout {
+            display: grid;
+            grid-template-columns: 220px 1fr 200px;
+            gap: 28px;
+            align-items: start;
+        }
+
+        /* LEFT SIDEBAR — Related Articles */
+        .sidebar-left {
+            position: sticky;
+            top: 110px;
+        }
+        .sidebar-section-title {
+            font-family: var(--font-sans);
+            font-size: 0.7rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #999;
+            border-bottom: 2px solid #111;
+            padding-bottom: 6px;
+            margin-bottom: 14px;
+        }
+        .sidebar-article-card {
+            cursor: pointer;
+            padding: 10px 0;
+            border-bottom: 1px solid #e5e5e5;
+        }
+        .sidebar-article-card:last-child { border-bottom: none; }
+        .sidebar-article-card .sac-category {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent-color);
+            margin-bottom: 4px;
+        }
+        .sidebar-article-card h4 {
+            font-family: var(--font-serif);
+            font-size: 0.92rem;
+            line-height: 1.3;
+            color: #111;
+            margin-bottom: 4px;
+        }
+        .sidebar-article-card:hover h4 { color: var(--accent-color); }
+        .sidebar-article-card .sac-meta {
+            font-size: 0.72rem;
+            color: #888;
+        }
+
+        /* RIGHT SIDEBAR — Ads */
+        .sidebar-right {
+            position: sticky;
+            top: 110px;
+        }
+        .ad-unit {
+            margin-bottom: 18px;
+            border: 1px solid #ddd;
+            overflow: hidden;
+        }
+        .ad-label {
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #aaa;
+            text-align: center;
+            padding: 3px 0;
+            border-bottom: 1px solid #eee;
+            background: #fafafa;
+        }
+        .ad-banner {
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+        }
+        .ad-banner .ad-logo {
+            font-size: 1.1rem;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            margin-bottom: 6px;
+        }
+        .ad-banner .ad-tagline {
+            font-size: 0.75rem;
+            color: #555;
+            line-height: 1.3;
+            margin-bottom: 10px;
+        }
+        .ad-banner .ad-cta {
+            display: inline-block;
+            background: #111;
+            color: #fff;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 6px 14px;
+            border: none;
+            cursor: pointer;
+            border-radius: 20px !important;
+        }
+        .ad-banner .ad-cta:hover { background: var(--accent-color); }
+
+        /* Adjust main content to work inside grid */
+        .main-content-area { min-width: 0; }
+
+        /* Hide sidebars on home/paywall, only show on reading */
+        #state-home .page-layout,
+        #state-paywall .page-layout { grid-template-columns: 1fr; }
+        #state-home .sidebar-left,
+        #state-home .sidebar-right,
+        #state-paywall .sidebar-left,
+        #state-paywall .sidebar-right { display: none; }
+
+        /* ===== CHECKOUT FLOW ===== */
+        .checkout-wrapper {
+            max-width: 680px;
+            margin: 40px auto;
+        }
+        .checkout-steps {
+            display: flex;
+            align-items: center;
+            margin-bottom: 36px;
+            gap: 0;
+        }
+        .checkout-step {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+            position: relative;
+        }
+        .checkout-step:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            top: 16px;
+            left: 60%;
+            width: 80%;
+            height: 2px;
+            background: #ddd;
+            z-index: 0;
+        }
+        .checkout-step.completed:not(:last-child)::after { background: #111; }
+        .step-circle {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            border: 2px solid #ccc;
+            background: #fff;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; font-weight: 700; color: #aaa;
+            z-index: 1; position: relative;
+        }
+        .checkout-step.active .step-circle { border-color: #111; background: #111; color: #fff; }
+        .checkout-step.completed .step-circle { border-color: #111; background: #111; color: #fff; }
+        .step-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #aaa;
+            margin-top: 6px;
+            text-align: center;
+        }
+        .checkout-step.active .step-label,
+        .checkout-step.completed .step-label { color: #111; }
+
+        .checkout-panel { display: none; }
+        .checkout-panel.active { display: block; }
+
+        .checkout-panel h2 {
+            font-family: var(--font-serif);
+            font-size: 1.9rem;
+            margin-bottom: 6px;
+        }
+        .checkout-panel .panel-sub {
+            color: #666; font-size: 0.9rem; margin-bottom: 28px;
+        }
+
+        /* Form fields */
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #333;
+            margin-bottom: 6px;
+        }
+        .form-group input, .form-group select {
+            width: 100%;
+            border: 1px solid #ccc;
+            padding: 11px 14px;
+            font-size: 0.95rem;
+            font-family: var(--font-sans);
+            outline: none;
+            transition: border-color 0.2s;
+            background: #fff;
+            border-radius: 6px;
+        }
+        .form-group input:focus, .form-group select:focus { border-color: #111; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+        .plan-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .plan-option {
+            border: 2px solid #ddd;
+            padding: 16px;
+            cursor: pointer;
+            text-align: center;
+            transition: border-color 0.2s;
+            border-radius: 8px;
+        }
+        .plan-option.selected { border-color: #111; }
+        .plan-option .plan-name { font-weight: 800; font-size: 1rem; margin-bottom: 4px; }
+        .plan-option .plan-price { font-size: 1.4rem; font-weight: 900; color: var(--accent-color); }
+        .plan-option .plan-price span { font-size: 0.8rem; font-weight: 400; color: #666; }
+        .plan-option .plan-desc { font-size: 0.78rem; color: #666; margin-top: 4px; }
+        .plan-badge-popular {
+            background: var(--accent-color); color: #fff;
+            font-size: 0.65rem; font-weight: 700; text-transform: uppercase;
+            padding: 2px 8px; display: inline-block; margin-bottom: 8px;
+            border-radius: 4px;
+        }
+
+        /* Order review */
+        .order-summary-box {
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 24px;
+            background: #fafafa;
+            border-radius: 8px;
+        }
+        .order-row {
+            display: flex; justify-content: space-between;
+            font-size: 0.9rem; padding: 7px 0;
+            border-bottom: 1px solid #eee;
+        }
+        .order-row:last-child { border-bottom: none; }
+        .order-row.total {
+            font-weight: 800; font-size: 1rem;
+            border-top: 2px solid #111; margin-top: 4px; padding-top: 12px;
+        }
+        .order-row .row-label { color: #444; }
+        .order-row .row-value { font-weight: 600; }
+        .order-row.total .row-value { color: var(--accent-color); }
+
+        .card-summary {
+            display: flex; align-items: center; gap: 12px;
+            background: #fff; border: 1px solid #ddd; padding: 14px;
+            margin-bottom: 24px;
+            border-radius: 6px;
+        }
+        .card-icon {
+            width: 40px; height: 26px; background: #1a1f71;
+            border-radius: 3px; display: flex; align-items: center; justify-content: center;
+            font-size: 0.55rem; font-weight: 900; color: #fff; letter-spacing: 0.5px;
+        }
+        .card-number-display { font-size: 0.9rem; color: #333; }
+        .card-number-display span { color: #999; }
+
+        .guarantee-note {
+            font-size: 0.78rem; color: #888; text-align: center; margin-bottom: 20px;
+            line-height: 1.4;
+        }
+        .guarantee-note strong { color: #444; }
+
+        /* Confirmation */
+        .confirmation-icon {
+            width: 64px; height: 64px; background: #111;
+            border-radius: 50%; margin: 0 auto 20px;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .confirmation-icon svg { width: 32px; height: 32px; stroke: #fff; fill: none; stroke-width: 2.5; }
+        .confirmation-panel { text-align: center; }
+        .confirmation-detail-box {
+            background: #fafafa; border: 1px solid #ddd;
+            padding: 20px; text-align: left; margin: 24px 0;
+            border-radius: 8px;
+        }
+        .confirmation-detail-box p { font-size: 0.88rem; color: #444; margin-bottom: 8px; }
+        .confirmation-detail-box p:last-child { margin-bottom: 0; }
+        .confirmation-detail-box strong { color: #111; }
+
+        /* Checkout buttons */
+        .btn-checkout-primary {
+            background: #111; color: #fff;
+            border: none; width: 100%; padding: 15px;
+            font-size: 1rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; cursor: pointer; margin-bottom: 12px;
+            border-radius: 30px !important;
+        }
+        .btn-checkout-primary:hover { background: var(--accent-color); }
+        
+        .btn-checkout-back { 
+            background: transparent !important; 
+            border: 1px solid #666666 !important; 
+            color: #666666 !important; 
+            text-decoration: none !important; 
+            font-size: 0.85rem; 
+            cursor: pointer; 
+            display: block; 
+            margin: 10px auto 0 !important; 
+            padding: 8px 20px !important; 
+            border-radius: 24px !important; 
+            transition: all 0.2s;
+        }
+        .btn-checkout-back:hover {
+            background: #e5e7eb !important;
+            color: #111111 !important;
+        }
+
+        .secure-badges {
+            display: flex; justify-content: center; gap: 20px;
+            margin-top: 16px; flex-wrap: wrap;
+        }
+        .secure-badge {
+            font-size: 0.72rem; color: #888; display: flex; align-items: center; gap: 4px;
+        }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .page-layout { grid-template-columns: 1fr; }
+            .sidebar-left, .sidebar-right { display: none; }
+        }
+        
+        .researcher-utility { position: fixed; bottom: 10px; left: 10px; z-index: 99999; display: flex; gap: 10px; }
+        .researcher-utility button { background: rgba(0,0,0,0.7); color: #fff; border: none; padding: 6px 12px; font-size: 0.75rem; cursor: pointer; border-radius: 12px !important; }
+        .fixed-timer-display { position: fixed; bottom: 10px; right: 10px; background: #000; color: #fff; padding: 6px 12px; font-family: monospace; font-size: 0.85rem; z-index: 99999; border-radius: 6px; }
+
+        /* Consent Page Styling */
+        .consent-container {
+            max-width: 650px;
+            margin: 40px auto;
+            padding: 40px;
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+        }
+        .consent-title {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            text-align: center;
+            margin-bottom: 24px;
+            color: #111111;
+        }
+        .consent-text-box {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #4a5568;
+            max-height: 250px;
+            overflow-y: auto;
+            border: 1px solid #e2e8f0;
+            padding: 20px;
+            background: #f8fafc;
+            margin-bottom: 24px;
+            border-radius: 6px;
+        }
+        .consent-text-box p {
+            margin-bottom: 12px;
+        }
+        .consent-text-box p:last-child {
+            margin-bottom: 0;
+        }
+        .signature-pad-wrapper {
+            border: 1px dashed #cbd5e1;
+            background: #f8fafc;
+            position: relative;
+            margin-top: 8px;
+            border-radius: 6px;
+        }
+        #signature-canvas {
+            display: block;
+            width: 100%;
+            height: 150px;
+            cursor: crosshair;
+        }
+        .btn-clear-sig {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9) !important;
+            border: 1px solid #cbd5e1 !important;
+            padding: 4px 12px !important;
+            font-size: 0.75rem;
+            cursor: pointer;
+            border-radius: 20px !important;
+            font-weight: 600;
+            color: #333 !important;
+            transition: all 0.2s;
+        }
+        .btn-clear-sig:hover {
+            background: #f1f5f9 !important;
+        }
+
+        /* ANIMATED SIDEBAR ADS */
+        .ad-unit-pulse {
+            animation: adPulse 2.5s infinite ease-in-out;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        @keyframes adPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); border-color: var(--accent-color); }
+        }
+
+        .ad-unit-glow {
+            animation: adGlow 1.5s infinite alternate;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            transition: all 0.2s;
+        }
+        @keyframes adGlow {
+            0% { box-shadow: 0 0 4px rgba(153, 0, 0, 0.2); }
+            100% { box-shadow: 0 0 12px rgba(153, 0, 0, 0.5); border-color: var(--accent-color); }
+        }
+
+        /* PREMIUM POPUP AD STYLING */
+        .stressor-backdrop {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+        .stressor-box {
+            background: #ffffff;
+            border: 3px solid #111;
+            padding: 35px 30px;
+            max-width: 460px;
+            width: 90%;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+        }
+        .btn-stressor-cta {
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            width: 100%;
+            margin-top: 20px;
+            margin-bottom: 12px;
+            border-radius: 30px !important;
+            transition: background-color 0.2s;
+        }
+        .btn-stressor-cta:hover {
+            background-color: #111111;
+        }
+        .btn-stressor-close {
+            background: transparent;
+            color: #666;
+            border: 1px solid #ccc;
+            padding: 8px 20px;
+            font-size: 0.8rem;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 24px !important;
+            transition: all 0.2s;
+        }
+        .btn-stressor-close:hover {
+            background-color: #f1f5f9;
+            color: #111;
+        }
+        body.no-scroll {
+            overflow: hidden !important;
+            height: 100vh !important;
+        }
+
+        /* BITERUSH BOTTOM BANNER STYLING */
+        .biterush-bottom-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50vh;
+            background: #ffffff;
+            border-top: 6px solid #e11d48;
+            box-shadow: 0 -15px 35px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: slideUpBiteRush 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            transition: height 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+        }
+        @keyframes slideUpBiteRush {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        .biterush-container {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+            padding: 20px 40px;
+            gap: 40px;
+            position: relative;
+            transition: all 0.35s ease;
+        }
+        .biterush-img-wrap {
+            flex: 1;
+            height: 90%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.35s ease;
+        }
+        .biterush-img-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .biterush-info {
+            flex: 1.2;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: left;
+            transition: all 0.35s ease;
+        }
+        .biterush-logo {
+            font-family: sans-serif;
+            font-weight: 800;
+            color: #e11d48;
+            font-size: 1.1rem;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            transition: all 0.35s ease;
+        }
+        .biterush-headline {
+            font-family: var(--font-serif);
+            font-size: 2.2rem;
+            line-height: 1.2;
+            color: #111;
+            margin-bottom: 12px;
+            font-weight: 800;
+            transition: all 0.35s ease;
+        }
+        .biterush-subtext {
+            font-size: 1.05rem;
+            color: #4b5563;
+            margin-bottom: 20px;
+            line-height: 1.4;
+            transition: all 0.35s ease;
+        }
+        .biterush-btn {
+            background: #e11d48;
+            color: #ffffff;
+            border: none;
+            padding: 14px 30px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 30px !important;
+            max-width: 200px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+            transition: all 0.2s;
+        }
+        .biterush-btn:hover {
+            background: #be123c;
+            box-shadow: 0 6px 16px rgba(225, 29, 72, 0.4);
+        }
+        .btn-biterush-close-x {
+            position: absolute;
+            top: 15px;
+            right: 25px;
+            background: #f3f4f6;
+            border: none;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: #4b5563;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+        .btn-biterush-close-x:hover {
+            background: #e5e7eb;
+            color: #111;
+        }
+
+        /* MINIMIZED HORIZONTAL BAR (Reduced by 45% height, persists horizontally while reading) */
+        .biterush-bottom-banner.minimized {
+            height: 27.5vh !important; /* 45% reduction from 50vh */
+            box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.18);
+        }
+        .biterush-bottom-banner.minimized .biterush-container {
+            padding: 10px 30px;
+            gap: 25px;
+        }
+        .biterush-bottom-banner.minimized .biterush-img-wrap {
+            height: 88%;
+            max-width: 240px;
+        }
+        .biterush-bottom-banner.minimized .biterush-logo {
+            font-size: 0.85rem;
+            margin-bottom: 2px;
+        }
+        .biterush-bottom-banner.minimized .biterush-headline {
+            font-size: 1.35rem;
+            margin-bottom: 3px;
+            line-height: 1.15;
+        }
+        .biterush-bottom-banner.minimized .biterush-subtext {
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+            line-height: 1.25;
+        }
+        .biterush-bottom-banner.minimized .biterush-btn {
+            padding: 7px 20px;
+            font-size: 0.9rem;
+            max-width: 160px;
+        }
+        .biterush-bottom-banner.minimized .btn-biterush-close-x {
+            top: 10px;
+            right: 15px;
+            width: 30px;
+            height: 30px;
+            font-size: 1.1rem;
+        }
+
+        /* =============================================
+           CMV TIERED STRATEGIC INCONVENIENCE RELIEF (WTP)
+        ============================================= */
+        .paywall-overlay.cmv-overlay {
+            max-width: 720px;
+            padding: 40px 36px;
+        }
+        .cmv-valuation-card {
+            text-align: left;
+        }
+        .cmv-header {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .cmv-header h2 {
+            font-family: var(--font-serif);
+            font-size: 2rem;
+            margin: 12px 0 8px 0;
+            color: #111;
+        }
+        .cmv-framework-badge {
+            display: inline-block;
+            background: #e2e8f0;
+            color: #334155;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 12px;
+        }
+        .cmv-instructions {
+            color: #555;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin: 0 auto;
+            max-width: 600px;
+        }
+        .cmv-tiers-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .cmv-tier-card {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 16px 18px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            user-select: none;
+        }
+        .cmv-tier-card:hover {
+            border-color: #94a3b8;
+            background: #f8fafc;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+        }
+        .cmv-tier-card.selected {
+            border-color: var(--accent-color);
+            background: #fffcf7;
+            box-shadow: 0 0 0 1px var(--accent-color), 0 4px 14px rgba(180, 83, 9, 0.08);
+        }
+        .cmv-radio-col {
+            padding-top: 3px;
+        }
+        .cmv-radio-col input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--accent-color);
+            cursor: pointer;
+            margin: 0;
+        }
+        .cmv-content-col {
+            flex: 1;
+        }
+        .cmv-tier-top-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 4px;
+        }
+        .cmv-tier-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #111;
+        }
+        .cmv-tier-cost-badge {
+            font-size: 0.82rem;
+            font-weight: 800;
+            color: var(--accent-color);
+            background: rgba(180, 83, 9, 0.08);
+            border: 1px solid rgba(180, 83, 9, 0.2);
+            padding: 3px 10px;
+            border-radius: 12px;
+            white-space: nowrap;
+        }
+        .cmv-tier-cost-badge.tier-0-cost {
+            color: #64748b;
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+        .cmv-tier-friction-tag {
+            display: inline-block;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #475569;
+            background: #f1f5f9;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-bottom: 6px;
+        }
+        .cmv-tier-desc {
+            font-size: 0.88rem;
+            color: #4b5563;
+            line-height: 1.45;
+            margin: 0;
+        }
+        .cmv-actions {
+            margin-top: 20px;
+        }
+        .btn-confirm-wtp {
+            width: 100%;
+            background: #111111;
+            color: #ffffff;
+            border: none;
+            padding: 16px 24px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border-radius: 30px !important;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .btn-confirm-wtp:hover:not(:disabled) {
+            background: var(--accent-color);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+        }
+        .btn-confirm-wtp:disabled {
+            background: #cbd5e1;
+            color: #94a3b8;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        body.night-mode .cmv-framework-badge {
+            background: #334155;
+            color: #cbd5e1;
+        }
+        body.night-mode .cmv-header h2 {
+            color: #f1f5f9;
+        }
+        body.night-mode .cmv-tier-card {
+            background: #1e293b;
+            border-color: #334155;
+        }
+        body.night-mode .cmv-tier-card:hover {
+            background: #243247;
+            border-color: #475569;
+        }
+        body.night-mode .cmv-tier-card.selected {
+            border-color: var(--accent-color);
+            background: #27272a;
+        }
+        body.night-mode .cmv-tier-title {
+            color: #f8fafc;
+        }
+        body.night-mode .cmv-tier-desc {
+            color: #94a3b8;
+        }
+        body.night-mode .cmv-tier-friction-tag {
+            background: #334155;
+            color: #cbd5e1;
+        }
+        body.night-mode .cmv-tier-cost-badge.tier-0-cost {
+            background: #334155;
+            color: #94a3b8;
+            border-color: #475569;
+        }
+        body.night-mode .btn-confirm-wtp:disabled {
+            background: #334155;
+            color: #64748b;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="app-container">
+        <!-- EDITORIAL HEADER (Hidden on consent screen) -->
+        <header class="editorial-header">
+            <div class="header-top-bar">
+                <button class="btn-header-premium" onclick="navigateTo('paywall')">Click Here to Convert to Premium</button>
+            </div>
+            <div class="logo-container">
+                <h1 class="portal-logo" onclick="navigateTo('home')" title="Click to return to Home">THE DAILY CHRONICLE</h1>
+                <p class="portal-tagline">Independent Journalism Since 2026</p>
+            </div>
+            <nav class="editorial-nav">
+                <ul>
+                    <li onclick="navigateTo('home')" style="color: var(--accent-color); font-weight: 800;">HOME</li>
+                    <li onclick="loadArticle(1)">Politics</li>
+                    <li onclick="navigateTo('home')">Technology</li>
+                    <li onclick="loadArticle(2)">Science</li>
+                    <li onclick="loadArticle(3)">Culture</li>
+                    <li onclick="navigateTo('home')">Economy</li>
+                    <li onclick="navigateTo('home')">Sports</li>
+                </ul>
+            </nav>
+        </header>
+
+        <!-- STATE CONSENT FORM (Pre-Experiment Landing Page) -->
+        <main id="state-consent" class="app-state">
+            <div class="consent-container">
+                <h1 class="consent-title">Informed Consent & Participation Agreement</h1>
+                
+                <div class="consent-text-box">
+                    <p><strong>Introduction:</strong> You are invited to participate in a user experience research study designed to evaluate website interfaces and cognitive factors. By continuing, you agree to participate in this experiment.</p>
+                    
+                    <p><strong>Experiment Details:</strong> During this session, you will browse articles and interact with website features. The system will simulate different interface elements, including paywalls and system delays. Your reading progress, clicks, and interactions will be recorded in a telemetry file for scientific evaluation.</p>
+                    
+                    <p><strong>Discomfort & Risk Acknowledgment:</strong> Some elements of this platform are designed to be cognitively demanding (e.g., paywalls, delayed response times). You may experience mild annoyance or cognitive discomfort.</p>
+                    
+                    <p><strong>Disclaimer & Waiver of Liability:</strong> By signing below and starting this experiment, you hereby release the experimenters, developers, and associated institutions from any and all liability for any psychological discomfort, stress, frustration, or inconvenience that may arise directly or indirectly from your participation in this study.</p>
+                    
+                    <p><strong>Voluntary Participation:</strong> Your participation is completely voluntary. You have the right to withdraw from the study at any time without penalty by closing this browser tab. All collected telemetry is anonymous.</p>
+                </div>
+                
+                <div class="consent-form-fields">
+                    <div class="form-group">
+                        <label for="consent-name">Participant Full Name</label>
+                        <input type="text" id="consent-name" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="consent-email">Participant Email Address</label>
+                        <input type="email" id="consent-email" placeholder="Enter your email address" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Draw Your Signature</label>
+                        <div class="signature-pad-wrapper">
+                            <canvas id="signature-canvas" width="450" height="150"></canvas>
+                            <button type="button" class="btn-clear-sig" id="btn-clear-sig">Clear Signature</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <button id="btn-start-experiment" class="btn-checkout-primary" style="margin-top: 20px;">Start Experiment</button>
+            </div>
+        </main>
+
+        <!-- STATE HOME -->
+        <main id="state-home" class="app-state hidden">
+            <div class="page-layout">
+                <aside class="sidebar-left" id="home-sidebar-left"></aside>
+                <div class="main-content-area">
+                    <section class="hero-section">
+                        <div class="hero-badge">IOC Global News • Special Report</div>
+                        <h2 id="hero-title" class="main-headline" onclick="loadArticle(0)">Olympic Legacy in Images: Understanding the Lifecycle of Olympic Venues</h2>
+                        <p id="hero-excerpt" class="article-excerpt">The recently updated IOC Venues Report shows how Olympic venues continue to be used after the Games – across sport, culture and community life – providing data on editions frequently misrepresented in public debates.</p>
+                    </section>
+                    <hr class="double-divider">
+                    <section class="secondary-feed" id="article-list"></section>
+                </div>
+                <aside class="sidebar-right" id="home-sidebar-right"></aside>
+            </div>
+        </main>
+
+        <!-- STATE READING -->
+        <main id="state-reading" class="app-state hidden">
+            <div class="page-layout">
+                <aside class="sidebar-left" id="reading-sidebar-left"></aside>
+                <div class="main-content-area">
+                    <article class="long-form-container">
+                        <header class="article-header">
+                            <h1 id="art-title"></h1>
+                            <div class="article-meta">Published on Platform Editorial System • Continuous Updates • 8 min read</div>
+                            <div class="apa-citation-header">
+                                <!-- Methodological citation will inject dynamically here via JavaScript -->
+                            </div>
+                        </header>
+                        <hr class="thin-divider">
+                        <div id="article-body" class="article-body-text"></div>
+                    </article>
+                </div>
+                <aside class="sidebar-right" id="reading-sidebar-right"></aside>
+            </div>
+        </main>
+
+        <!-- STATE PAYWALL -->
+        <main id="state-paywall" class="app-state hidden">
+            <div class="paywall-overlay cmv-overlay">
+                <div class="paywall-card cmv-valuation-card">
+                    <div class="cmv-header">
+                        <span class="cmv-framework-badge">Valuation Protocol (CMV)</span>
+                        <h2>Valuation of Strategic Inconvenience Relief</h2>
+                        <p class="cmv-instructions">Please evaluate the friction levels experienced during this session and select your preferred tier of inconvenience relief. Your selection determines the friction removal applied to your reading environment.</p>
+                    </div>
+
+                    <div class="cmv-tiers-grid" id="cmv-tiers-group" role="radiogroup" aria-label="Willingness-to-Pay CMV Tiers">
+                        <!-- Tier 0 -->
+                        <div class="cmv-tier-card" data-tier="0" onclick="selectWtpTier(0)">
+                            <div class="cmv-radio-col">
+                                <input type="radio" name="wtp_cmv_tier" id="cmv-tier-0" value="0" tabindex="-1">
+                            </div>
+                            <div class="cmv-content-col">
+                                <div class="cmv-tier-top-row">
+                                    <span class="cmv-tier-title">Tier 0: No Upgrade</span>
+                                    <span class="cmv-tier-cost-badge tier-0-cost">0% Cost / 0 Tokens</span>
+                                </div>
+                                <div class="cmv-tier-friction-tag">Baseline Conditions Retained</div>
+                                <p class="cmv-tier-desc">Keep current baseline conditions (retain unskippable video pop-ups and persistent banners).</p>
+                            </div>
+                        </div>
+
+                        <!-- Tier 1 -->
+                        <div class="cmv-tier-card" data-tier="1" onclick="selectWtpTier(1)">
+                            <div class="cmv-radio-col">
+                                <input type="radio" name="wtp_cmv_tier" id="cmv-tier-1" value="1" tabindex="-1">
+                            </div>
+                            <div class="cmv-content-col">
+                                <div class="cmv-tier-top-row">
+                                    <span class="cmv-tier-title">Tier 1: Partial Visual Relief</span>
+                                    <span class="cmv-tier-cost-badge">25% Cost / 10 Tokens</span>
+                                </div>
+                                <div class="cmv-tier-friction-tag">Persistent Bottom Banner / Interstitial Skip Relief</div>
+                                <p class="cmv-tier-desc">Remove the persistent bottom banner (18% viewport) OR allow skipping the interstitial video after 5 seconds.</p>
+                            </div>
+                        </div>
+
+                        <!-- Tier 2 -->
+                        <div class="cmv-tier-card" data-tier="2" onclick="selectWtpTier(2)">
+                            <div class="cmv-radio-col">
+                                <input type="radio" name="wtp_cmv_tier" id="cmv-tier-2" value="2" tabindex="-1">
+                            </div>
+                            <div class="cmv-content-col">
+                                <div class="cmv-tier-top-row">
+                                    <span class="cmv-tier-title">Tier 2: Functional Interruption Relief</span>
+                                    <span class="cmv-tier-cost-badge">50% Cost / 20 Tokens</span>
+                                </div>
+                                <div class="cmv-tier-friction-tag">Shutdown Penalty & Initial Banner Occlusion Relief</div>
+                                <p class="cmv-tier-desc">Eliminate the critical shutdown penalty (declining the video no longer closes the platform) and reduce initial banner occlusion.</p>
+                            </div>
+                        </div>
+
+                        <!-- Tier 3 -->
+                        <div class="cmv-tier-card" data-tier="3" onclick="selectWtpTier(3)">
+                            <div class="cmv-radio-col">
+                                <input type="radio" name="wtp_cmv_tier" id="cmv-tier-3" value="3" tabindex="-1">
+                            </div>
+                            <div class="cmv-content-col">
+                                <div class="cmv-tier-top-row">
+                                    <span class="cmv-tier-title">Tier 3: Full Premium Experience</span>
+                                    <span class="cmv-tier-cost-badge">75%–100% Cost / 50 Tokens</span>
+                                </div>
+                                <div class="cmv-tier-friction-tag">Complete Friction Removal</div>
+                                <p class="cmv-tier-desc">Complete ad-free experience (zero banners, zero video pop-ups, completely uninterrupted reading flow).</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="cmv-actions">
+                        <button id="btn-confirm-wtp" class="btn-confirm-wtp" disabled onclick="confirmWtpTierSelection()">Confirm Selection & Continue</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- CHECKOUT FLOW (3 steps) -->
+        <main id="state-checkout" class="app-state hidden">
+            <div class="checkout-wrapper">
+
+                <!-- Step indicators -->
+                <div class="checkout-steps" id="checkout-steps">
+                    <div class="checkout-step active" id="step-ind-1">
+                        <div class="step-circle">1</div>
+                        <div class="step-label">Payment</div>
+                    </div>
+                    <div class="checkout-step" id="step-ind-2">
+                        <div class="step-circle">2</div>
+                        <div class="step-label">Review</div>
+                    </div>
+                    <div class="checkout-step" id="step-ind-3">
+                        <div class="step-circle">3</div>
+                        <div class="step-label">Confirm</div>
+                    </div>
+                </div>
+
+                <!-- STEP 1: Payment details -->
+                <div class="checkout-panel active" id="checkout-step-1">
+                    <h2>Payment Details</h2>
+                    <p class="panel-sub">Choose your plan and enter your card information.</p>
+
+                    <div class="plan-selector">
+                        <div class="plan-option" id="plan-monthly" onclick="selectPlan('monthly')">
+                            <div class="plan-name">Monthly</div>
+                            <div class="plan-price">50<span> tokens/mo</span></div>
+                            <div class="plan-desc">Billed monthly in tokens. Cancel anytime.</div>
+                        </div>
+                        <div class="plan-option selected" id="plan-annual" onclick="selectPlan('annual')">
+                            <div class="plan-badge-popular">Most Popular</div>
+                            <div class="plan-name">Annual</div>
+                            <div class="plan-price">35<span> tokens/mo</span></div>
+                            <div class="plan-desc">420 tokens/yr. Save 30%.</div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Cardholder Name</label>
+                        <input type="text" id="card-name" placeholder="As it appears on your card">
+                    </div>
+                    <div class="form-group">
+                        <label>Card Number</label>
+                        <input type="text" id="card-number" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCardNumber(this)">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Expiry Date</label>
+                            <input type="text" id="card-expiry" placeholder="MM / YY" maxlength="7" oninput="formatExpiry(this)">
+                        </div>
+                        <div class="form-group">
+                            <label>CVV</label>
+                            <input type="text" id="card-cvv" placeholder="•••" maxlength="4">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="billing-email" placeholder="your@email.com">
+                    </div>
+
+                    <button class="btn-checkout-primary" onclick="goToCheckoutStep(2)">Continue to Review →</button>
+                    <button class="btn-checkout-back" onclick="navigateTo('paywall')">← Back</button>
+
+                    <div class="secure-badges">
+                        <span class="secure-badge">🔒 256-bit SSL</span>
+                        <span class="secure-badge">✓ No hidden fees</span>
+                        <span class="secure-badge">✓ Cancel anytime</span>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Review order -->
+                <div class="checkout-panel" id="checkout-step-2">
+                    <h2>Review Your Order</h2>
+                    <p class="panel-sub">Please verify your details before confirming.</p>
+
+                    <div class="card-summary" id="review-card-summary">
+                        <div class="card-icon">VISA</div>
+                        <div class="card-number-display">
+                            <span>•••• •••• ••••</span> <span id="review-card-last4">????</span>
+                        </div>
+                    </div>
+
+                    <div class="order-summary-box">
+                        <div class="order-row">
+                            <span class="row-label">Plan</span>
+                            <span class="row-value" id="review-plan-name">Annual Premium</span>
+                        </div>
+                        <div class="order-row">
+                            <span class="row-label">Billing cycle</span>
+                            <span class="row-value" id="review-billing-cycle">Yearly (420 tokens/yr)</span>
+                        </div>
+                        <div class="order-row">
+                            <span class="row-label">Email</span>
+                            <span class="row-value" id="review-email">—</span>
+                        </div>
+                        <div class="order-row">
+                            <span class="row-label">Subtotal</span>
+                            <span class="row-value" id="review-subtotal">420 tokens</span>
+                        </div>
+                        <div class="order-row">
+                            <span class="row-label">Tax (0%)</span>
+                            <span class="row-value">0 tokens</span>
+                        </div>
+                        <div class="order-row total">
+                            <span class="row-label">Total Due Today</span>
+                            <span class="row-value" id="review-total">420 tokens</span>
+                        </div>
+                    </div>
+
+                    <p class="guarantee-note">By confirming you agree to our <strong>Terms of Service</strong> and <strong>Privacy Policy</strong>. Your subscription renews automatically. You may cancel at any time from your account settings.</p>
+
+                    <button class="btn-checkout-primary" onclick="goToCheckoutStep(3)">Confirm & Subscribe →</button>
+                    <button class="btn-checkout-back" onclick="goToCheckoutStep(1)">← Edit Payment</button>
+                </div>
+
+                <!-- STEP 3: Confirmation -->
+                <div class="checkout-panel confirmation-panel" id="checkout-step-3">
+                    <div class="confirmation-icon">
+                        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                    </div>
+                    <h2>You're all set!</h2>
+                    <p class="panel-sub">Welcome to The Daily Chronicle Premium. Your subscription is now active.</p>
+
+                    <div class="confirmation-detail-box">
+                        <p><strong>Plan:</strong> <span id="confirm-plan">Annual Premium</span></p>
+                        <p><strong>Amount charged:</strong> <span id="confirm-amount">420 tokens</span></p>
+                        <p><strong>Confirmation sent to:</strong> <span id="confirm-email">your@email.com</span></p>
+                        <p><strong>Next renewal:</strong> June 22, 2027</p>
+                    </div>
+
+                    <button class="btn-checkout-primary" onclick="logConversion('Conversion'); navigateTo('home')">Start Reading Premium Content →</button>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- PREMIUM POPUP AD CONTAINER -->
+    <div id="premium-popup-ad-container" class="stressor-backdrop hidden">
+        <div class="stressor-box" id="premium-popup-box">
+            <span class="premium-badge" style="background-color: var(--accent-color); color: white; padding: 4px 10px; border-radius: 12px; font-size: 0.72rem; text-transform: uppercase; font-weight: 700;">Platform Premium Spotlight</span>
+            <h3 style="font-family: var(--font-serif); font-size: 1.8rem; margin-top: 15px; margin-bottom: 10px; color: #111;">Tired of cognitive interruptions?</h3>
+            <p style="font-size: 0.92rem; color: #555; line-height: 1.4;">87% of our elite subscribers eliminate tracking metrics and interface delays by upgrading to premium access.</p>
+            <button class="btn-stressor-cta" onclick="handlePremiumPopupUpgrade()">CONVERT TO PREMIUM NOW</button>
+            <button class="btn-stressor-close" onclick="closePremiumPopup()">Close advertisement and return to article</button>
+        </div>
+    </div>
+
+    <!-- BITERUSH BOTTOM BANNER OVERLAY -->
+    <div id="biterush-ad-banner" class="biterush-bottom-banner hidden">
+        <div class="biterush-container">
+            <button class="btn-biterush-close-x" onclick="closeBiteRushBanner()" title="Minimize banner">&times;</button>
+            <div class="biterush-img-wrap">
+                <img src="Prototype Thesis/Images/ads/Gemini_Generated_Image_9spfcv9spfcv9spf.jpg" alt="BiteRush Delivery" onerror="this.src='Images/ads/Gemini_Generated_Image_9spfcv9spfcv9spf.jpg';">
+            </div>
+            <div class="biterush-info">
+                <div class="biterush-logo">BITERUSH</div>
+                <h2 class="biterush-headline">Your fridge is empty. We aren’t.</h2>
+                <p class="biterush-subtext">Hot meals from your favorite local spots in 25 minutes or less.</p>
+                <button class="biterush-btn" onclick="handleBiteRushCtaClick()">Order Now</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="fixed-timer-display">TIME: <span id="global-timer-clock">00:00</span></div>
+
+    <div class="researcher-utility">
+        <button onclick="exportExperimentalData()">Export Session Data (JSON)</button>
+    </div>
+
+    <script>
+        window.onerror = function(message, source, lineno, colno, error) {
+            alert("JS Error: " + message + " at line " + lineno + " (" + source + ")");
+            return false;
+        };
+
+        const articlesConfig = [
+            {
+                id: 0,
+                title: "Olympic Legacy in Images: Understanding the Lifecycle of Olympic Venues",
+                excerpt: "The recently updated IOC Venues Report shows how Olympic venues continue to be used after the Games – across sport, culture and community life.",
+                elements: [
+                    { type: "p", text: "Public discussion around Olympic venues is often shaped by images depicting sites in a state of disrepair. In some cases, such portrayals rely on outdated material or lack appropriate context. To understand legacy over the long term, it helps to look at verified evidence of how venues are used after the Games. Today, the IOC encourages host cities to prioritise existing or temporary infrastructure, and to develop new permanent venues only when they address clear, long-term community needs." },
+                    { type: "h2", text: "Key Facts & Statistical Frameworks" },
+                    { type: "ul", items: [
+                        "Public debate on Olympic venues is often shaped by widely shared images from a few sites during difficult transition periods or later lifecycle stages.",
+                        "The IOC’s “Over 125 years of Olympic venues: post-Games use” report (982 venues, 53 Games) shows that 86 per cent of permanent venues – and 94 per cent since 2000 – are still in use.",
+                        "Overall, most venues remain in use, some are repurposed, and a small number close due to redevelopment, conflict or management challenges.",
+                        "This story looks at five editions frequently referenced in legacy discussions: Berlin 1936, Sarajevo 1984, Athens 2004, Beijing 2008 and Rio 2016."
+                    ]},
+                    { type: "p", text: "The recently updated IOC Venues Report shows how Olympic venues continue to be used after the Games – across sport, culture and community life – and how their legacy can differ from one host city to the next. The sections below draw on that evidence to provide context on a number of editions and sites that are frequently misrepresented in legacy discussions." },
+                    { type: "blockquote", text: "“Venue legacy is rarely defined by a single photo or one moment in time. Across Olympic Games editions, most Olympic venues continue to serve their communities long after the Games – hosting sport, events and public activity.” — Arram Kim, IOC Head of Legacy." },
+                    { type: "h2", text: "Berlin 1936: Competition Venues Still in Use Nearly 90 Years On" },
+                    { type: "p", text: "Nearly 90 years after Berlin 1936, the post-Games picture reflects both long-term continuity and the realities of history. Several venues were affected by redevelopment and changing city needs over the decades. At the same time, a large share of the competition venues have remained part of Berlin’s landscape." },
+                    { type: "image", src: "Prototype Thesis/Images/Olympics/Berlin.avif", caption: "The former swimming hall in the Berlin 1936 Olympic Village in Elstal, once used as a training centre. © Getty Images", color: "#cbd5e1", text: "[Photo: Berlin 1936 Protected Swimming Hall Area in Elstal]" },
+                    { type: "p", text: "After World War II, the Village was used as accommodation for Soviet soldiers and their families before being abandoned. A major fire destroyed the swimming hall in 1993. The site is now a protected heritage area, and parts have been renovated and opened to the public. Since 2017, the House of Nations – the former athletes’ dining hall and communal centre – has been renovated and converted into 117 rental apartments. New houses have been built around it, designed to reflect the architectural character of the original Olympic Village, with further houses planned to be built in the future." },
+                    { type: "p", text: "As for the competition venues, 20 venues were used for the Berlin 1936 Olympic Games. Fourteen remain in use today, supporting activities ranging from major competitions and high-performance training to grassroots sport and cultural events." },
+                    { type: "p", text: "Berlin Olympic Stadium remains a major venue for football, athletics and large-scale events. Within the wider Olympic Park, venues such as the Olympic Swimming Stadium, May Field and the hockey stadium remain in use, while the Waldbühne has been repurposed as a leading open-air performance venue." },
+                    { type: "p", text: "Another 1936 competition venue still in use is the Gymnasium and Cupola Hall (Haus des Deutschen Sports), which has recently been renovated and now serves as a federal training base for rhythmic gymnastics and a venue for competitions, including the annual international fencing tournament “Weißer Bär”." },
+                    { type: "p", text: "Over the decades, some sites did not survive. The Polizeistadion was destroyed during World War II. The Deutschlandhalle, damaged during the war and later repeatedly closed for structural repairs, was demolished in 2011. The former shooting ranges at Ruhleben are no longer used as a competition venue, and the site was converted into a recreational area in 2007. The former Döberitz drill grounds, used for the equestrian cross-country section, are now a nature reserve." },
+                    { type: "h2", text: "Sarajevo 1984: Resilience Shaped by War, Restoration and Reuse" },
+                    { type: "p", text: "Sarajevo’s Olympic legacy is one of resilience. Many of its Olympic venues were directly affected by the Bosnian War (1992–1995), and yet a large part of the Games infrastructure has been rebuilt, restored and brought back into community and sport use in the decades since." },
+                    { type: "image", src: "Prototype Thesis/Images/Olympics/Sarajevo.avif", caption: "Hotel Igman near Mount Igman, a Sarajevo 1984 non-competition venue. © Srdjan Stevanovic/Starsportphoto", color: "#94a3b8", text: "[Photo: Ruined remains of Hotel Igman post-conflict]" },
+                    { type: "p", text: "The Igman ski jumps are no longer used due to wartime damage, though the surrounding area has been redeveloped for families, including a small beginner slope and lift and a playground, which is very popular year-round." },
+                    { type: "image", src: "Prototype Thesis/Images/Olympics/The Igman Malo Polje recreation area during summer.png", caption: "The Igman Malo Polje recreation area during summer. © Alessandro Pires De Souza, Dreamstime.com", color: "#bbf7d0", text: "[Photo: Repurposed Family Parks at Malo Polje Infrastructure]" },
+                    { type: "p", text: "Across the wider Olympic area, six of the eight competition venues remain in use today, supporting sport, events and year-round outdoor recreation. Bjelašnica and Jahorina continue to operate as ski resorts, while access to Mount Trebević has increased with the cable car reopening in 2018, supporting hiking, cycling and tourism in the area." },
+                    { type: "p", text: "On Mount Trebević, the bobsleigh and luge track remains unfit for official sliding competitions, but has become a cultural landmark and is used for activities such as extreme cycling and summer luge training." },
+                    { type: "p", text: "At the same time, recovery efforts have brought key facilities back into service. Several venues were rebuilt or modernised with support from the IOC, former Olympic host cities and local authorities. The Zetra Complex – rebuilt after being extensively damaged – is now a multi-purpose hub." },
+                    { type: "p", text: "Its Olympic Hall hosts national teams across multiple sports, supports community activity and major events, and houses the Bosnia and Herzegovina NOC and the ZOI’84 Olympic Legacy Foundation. Koševo Stadium, which hosted the Opening Ceremony in 1984, remains a venue for football and athletics." },
+                    { type: "p", text: "Sarajevo’s Olympic identity has also continued to thrive through sport and culture. In 2019, Sarajevo and East Sarajevo hosted the European Youth Olympic Winter Festival, with several 1984 venues upgraded and reused for competition. The Olympic Village in Mojmilo was rebuilt after the war and is fully occupied, and the Olympic Museum was restored and reopened in 2020." },
+                    { type: "h2", text: "Athens 2004: A Legacy Shaped by Long-Term Redevelopment" },
+                    { type: "p", text: "Hosting the Athens 2004 Olympic Games was used as an opportunity to accelerate major improvements in urban planning, including the renovation of the historic centre of Athens, and the expansion of its transport system. The city of Athens became more connected to its surrounding municipalities thanks to two new lines opening in the Athens metro system. Other metro lines were extended to reach the inner suburbs of Athens; and new bus terminals were created close to the metro stations, easing traffic congestion." },
+                    { type: "image", src: "Prototype Thesis/Images/Olympics/Athens.avif", caption: "Metropolitan public transit updates connected to regional growth vectors. © IOC/François Richard", color: "#cbd5e1", text: "[Photo: Athens Metro Transit Connectivity Assets]" },
+                    { type: "p", text: "Currently, 67 per cent of the Athens 2004 Olympic venues remain in use, with the rest out of use due to planning and management issues. While this percentage is the lowest among Summer Olympic Games editions hosted after the 1950s, the 21 venues that remain in use are serving diverse purposes, including hosting high-performance and recreational sport events, and housing the city’s leading sports clubs, together with cultural events." },
+                    { type: "p", text: "Legacy debates around Athens 2004 focus on venues that went through uneven or delayed post-Games transitions. One example is the Schinias Olympic Rowing Centre, which hosted rowing and canoe sprint in 2004 and was recently the focus of restoration work led by the Hellenic Olympic Committee. The upgrades have helped bring the site back into fuller operational use for rowing and canoe-kayak, alongside training and future competitions." },
+                    { type: "p", text: "A larger cluster of venues faced longer-running challenges at the Helliniko Olympic Complex, built on the site of the former airport. Several venues there, including the Olympic Canoe and Kayak Slalom Centre, as well as the hockey, fencing, indoor arena, baseball and softball venues, were used only intermittently after the Games and then remained closed for many years amid political, economic and administrative challenges, and changes in ownership." },
+                    { type: "image", src: "Prototype Thesis/Images/Olympics/The Athens 2004 Olympic Canoe and Kayak Slalom Centre at Helliniko.png", caption: "The Athens 2004 Olympic Canoe and Kayak Slalom Centre at Helliniko. © Bloomberg via Getty Images", color: "#fca5a5", text: "[Photo: Helliniko Stadium structures before transformation]" },
+                    { type: "p", text: "As of 2025, the six former Helliniko venues have been demolished as the wider redevelopment of the former airport site moved into delivery, shifting the area from disused venue structures towards a new mixed-use district with significant public-space ambitions. As part of that wider transformation, a first section of the new Ellinikon Park opened to the public in 2022, introducing new green space and recreation areas on the former airport site." },
+                    { type: "p", text: "The Olympic Stadium, completed in 1982 and upgraded for Athens 2004, continued to host football, track and field and concert venue after the Games. Its capacity was reduced from 72,000 to 69,600 post-Games, and it staged major events such as the 2007 UEFA Champions League final, alongside concerts by artists including Madonna, Bon Jovi and Lady Gaga. As of 2025, the stadium has been closed for major structural work to the roof." },
+                    { type: "image", src: "Prototype Thesis/Images/Olympics/Structural updates and architectural assets at Athens Main Arena.jpg", caption: "Structural updates and architectural assets at Athens Main Arena. © IOC/Milos Bicanski", color: "#94a3b8", text: "[Photo: Structural Arch Views of the Athens Olympic Canopy]" },
+                    { type: "h2", text: "Beijing 2008: Iconic Venues Active, Temporary Sites Dismantled" },
+                    { type: "p", text: "Beijing 2008 combined permanent venues designed for long-term use with temporary sites intended to be removed after the Games. While some temporary sites went through longer transition periods, today all 30 permanent competition venues remain in use, and the temporary venues were dismantled as planned or repurposed over time. Some of the images that circulate most often focus on temporary sites captured during transition periods." },
+                    { type: "p", text: "One example is the Laoshan BMX venue, which was built as a temporary venue. After the Games, the site went through a period of inactivity before being converted into a public leisure park, with areas used for various activities over time, such as paintball." },
+                    { type: "p", text: "The Chaoyang Park Beach Volleyball Ground followed a different pathway. After the Games, the field of play was dismantled, while parts of the temporary structures remained. The site has since been fully dismantled and has continued to host cultural activities, including a Beijing 2008 memory exhibition. More recently, the area has been redeveloped through a new esports cultural complex, anchoring a wider urban renewal project that is positioning the area as a hub for esports events." },
+                    { type: "p", text: "Several other flagship venues continue to be used and were part of the Beijing 2022 Olympic Winter Games. The National Stadium (Bird’s Nest) hosted the Opening and Closing Ceremonies in 2008 and 2022, and has welcomed more than 40 million visitors since it opened in 2008, staging hundreds of large-scale events." },
+                    { type: "p", text: "The National Aquatics Centre (Water Cube/Ice Cube) remains a multi-functional sports, recreation and fitness venue, is open to the public and receives around 5,000 visitors a day. It was also adapted to host curling in 2022." },
+                    { type: "p", text: "The Wukesong Sports Centre stages more than 500 sports and cultural events a year, while the National Indoor Stadium remains a multi-purpose venue and hosted ice hockey in 2022." },
+                    { type: "p", text: "Beyond these landmarks, other venues continue to support sport and public activity. The Olympic Green Tennis Centre has hosted the China Open since 2009, and is open to the public when competitions are not taking place. Shunyi Olympic Rowing-Canoeing Park remains open for events and recreational water activities, and the Beijing Olympic Village transitioned into residential use, reaching a 95 per cent occupancy rate by 2016." },
+                    { type: "image", src: "Prototype Thesis/Images/Olympics/Beijing.avif", caption: "Visitors enjoy public ice play and ice sliding on the water pool at Beijing Olympic Park. © Tony Liu", color: "#bae6fd", text: "[Photo: Public Winter Ice Rink Operations inside Beijing Aquatics Hub]" },
+                    { type: "h2", text: "Rio 2016: Venues in Use Across Sport, Education and Public Life" },
+                    { type: "p", text: "Rio’s post-Games transition was not without setbacks. In the years after 2016, governance and operational challenges slowed aspects of delivery, and a number of sites went through periods of inactivity and deterioration before returning to regular use." },
+                    { type: "p", text: "The legacy of Rio’s temporary venues in particular took time to take shape. The temporary Olympic Aquatics Stadium was designed to be dismantled after the Games, with its pools planned for relocation and reuse. While some stages of this process took longer than originally planned, the venue is now fully dismantled and all the pools have now been repurposed in stages across Brazil, culminating in the reopening of the main competition pool in December 2025 at Parque Oeste Ana Gonzaga as a community facility in Rio’s West Zone." },
+                    { type: "image", src: "Prototype Thesis/Images/Olympics/Rio.png", caption: "Rio 2016 modular transformation plans. © IOC", color: "#fed7aa", text: "[Photo: Dismantling execution steps of the Olympic Aquatics Pool]" },
+                    { type: "p", text: "Over time, other venues have also been repurposed for education and community benefit. Carioca Arena 3 became the Isabel Salgado Olympic Educational Gymnasium, while Carioca Arena 2 is becoming a branch of the Federal Institute of Technical Education. The Arena of the Future was designed as a temporary venue and dismantled as planned, with its materials reused to build four public schools in the West Zone." },
+                    { type: "p", text: "Education programmes linked to Rio 2016 also reached beyond venues, such as the Transforma programme which benefited more than eight million students in almost 16,000 schools across Brazil between 2013 and 2016, and continued after the Games through follow-up initiatives." },
+                    { type: "image", src: "Prototype Thesis/Images/Olympics/The official Rio 2016 education programme, Transforma, offered pedagogical support to schools using Olympic values.jpg", caption: "The official Rio 2016 education programme, Transforma, offered pedagogical support to schools using Olympic values. © 2015 / IOC / NASCIMENTO, Gabriel", color: "#fef08a", text: "[Photo: Pedagogical training classroom framework under Transforma]" },
+                    { type: "p", text: "Public spaces and green spaces have also expanded through former Games areas. In the Olympic Park area, Rita Lee Park has been turned into a public space for sport and physical activity. In Deodoro, community sport areas have been expanded through X-Park and venues such as the Mountain Bike Centre, redesigned as a permanent circuit, alongside the reopened BMX track." },
+                    { type: "p", text: "Maracanã Stadium, which hosted the Opening and Closing Ceremonies and football at Rio 2016, is managed by local clubs Flamengo and Fluminense and hosts regular matches alongside occasional concerts, welcoming more than three million football fans in 2025. High-performance sport continues to benefit from facilities such as the Olympic Laboratory at the Maria Lenk Aquatic Centre, while the velodrome now also houses the Rio Olympic Museum." },
+                    { type: "p", text: "Overall, across Rio 2016, all 34 competition venues remain in use today, supporting elite training, professional sport, local clubs and community recreation, together with concerts and cultural events across Barra, Deodoro and Copacabana, alongside football stadiums nationwide." },
+                    { type: "blockquote", text: "“Across host cities, venue legacy rarely follows a single, linear path. Some sites remain in continuous use, others evolve into new functions, and a smaller number go through longer transition periods shaped by local circumstances. Over the long term, some venues also reach the natural end of their lifecycle and are demolished as part of wider redevelopment plans. Looking across these editions, the overall picture is one of venues continuing to support sport and community life – and of planning choices that increasingly prioritise existing and temporary infrastructure to align Games delivery with long-term needs.” — IOC Head of Legacy Arram Kim." },
+                    { type: "apa_references", text: "" }
+                ]
+            },
+            {
+                id: 1,
+                title: "German Federalism: How Does It Work?",
+                excerpt: "An essential breakdown of Germany's decentralized governance, the intricate balance of power between the Bund and the 16 Länder, and the legislative role of the Bundesrat.",
+                elements: [
+                    { type: "p", text: "The federal structure of Germany is one of the defining characteristics of its political system, intentionally designed to distribute power and ensure democratic stability. Established in its modern form after the devastation of World War II, German federalism divides public responsibilities between the central federal government (Bund) and the 16 individual states (Länder). The primary historical and constitutional objective behind this division is to prevent the absolute concentration of power within a single authority." },
+                    { type: "p", text: "Unlike centralized nations where regional governments act merely as administrative arms of the capital, the German Basic Law (Grundgesetz) guarantees that the states possess their own inherent sovereignty. This means each state maintains its own constitution, an independent parliament, a distinct judicial system, and an autonomous executive apparatus. This perpetual division of state power between central and regional actors forms a key tenet of what political scientists define as a resilient modern democracy." },
+                    { type: "h2", text: "The Balancing Act: Bund and Länder" },
+                    { type: "p", text: "Under the constitutional framework, powers are distributed based on the principle of subsidiarity, meaning tasks are handled at the lowest practical administrative level. However, to maintain national cohesion, the Basic Law specifies areas of exclusive federal legislative power. The central government in Berlin retains absolute authority over foreign affairs, national defense, border security, monetary systems, customs, and matters of national citizenship." },
+                    { type: "ul", items: [
+                        "Exclusive Federal Jurisdiction: The central federal government (Bund) holds sole power over international relations, defense frameworks, and currency stabilization.",
+                        "Concurrent Legislation: In fields like civil law, criminal law, and economic regulation, both levels may interact, but federal statutes strictly override state legislation if a conflict arises.",
+                        "Residual Powers: According to Article 30 of the Basic Law, any governmental function or task not explicitly assigned to the Bund by the constitution falls automatically to the independent states."
+                    ]},
+                    { type: "h2", text: "State Sovereignty: Education, Culture, and Policing" },
+                    { type: "p", text: "The true extent of state sovereignty (Kulturhoheit) is felt directly in the daily lives of citizens. The individual states are entirely independent in designing and executing their educational frameworks. This means school formats, university funding, teacher certification, and holiday calendars differ noticeably from Bavaria to Hamburg. Cultural policy, public broadcasting regulations, and municipal administrative laws are also determined at the state level." },
+                    { type: "p", text: "Furthermore, the states maintain full control over their internal security. Except for specialized federal agencies like the Federal Criminal Police Office (BKA), police forces are entirely state entities. Each state police department features its own uniforms, structural leadership, and regional tactical priorities. This localized operational model ensures that law enforcement remains deeply connected to regional civic nuances." },
+                    { type: "image", src: "Prototype Thesis/Images/German Federalism How Does It Work/Geographical distribution of the 16 sovereign states (Länder) constituting the Federal Republic.png", caption: "Geographical distribution of the 16 sovereign states (Länder) constituting the Federal Republic. © Deutsche Welle", color: "#cbd5e1", text: "[Graphic Chart: Germany's 16 Federal States and Regional Capitals]" },
+                    { type: "h2", text: "The Legislative Counterweight: The Role of the Bundesrat" },
+                    { type: "p", text: "A defining feature of German federalism is that regional states exert massive institutional influence over national legislation through the Bundesrat (Federal Council). Often confused with a standard senate, the Bundesrat is not made up of directly elected politicians. Instead, it consists of active cabinet members appointed directly by the governments of the 16 states." },
+                    { type: "blockquote", text: "“The Bundesrat acts as a powerful legislative check. Any federal law that impacts state finances or administrative competencies cannot pass without explicit approval from this council, forcing consensus across party lines.” — Deutsche Welle Political Analysis Report." },
+                    { type: "p", text: "Each state is assigned between three and six votes in the Bundesrat, depending on its population size, and a state's delegation must vote as a single, unified bloc. Because the states are responsible for executing the vast majority of federal regulations, the Basic Law dictates that more than half of all federal legislation requires the explicit consent (Zustimmungsbedürftigkeit) of the Bundesrat. If the political majority in the Bundestag (the lower house) differs from the majority in the Bundesrat, a joint mediation committee (Vermittlungsausschuss) must be called to negotiate an acceptable political compromise." },
+                    { type: "image", src: "Prototype Thesis/Images/German Federalism How Does It Work/The interlocking legislative pipeline between the Bundestag and the Bundesrat.webp", caption: "The interlocking legislative pipeline between the Bundestag and the Bundesrat. © Deutsche Welle", color: "#94a3b8", text: "[Flowchart Diagram: The German Federal Legislative Process]" },
+                    { type: "h2", text: "Financial Equalization: The Solidarity Dilemma" },
+                    { type: "p", text: "Operating a highly decentralized federal system requires addressing significant economic disparities between regions. Germany historical structured an explicit horizontal and vertical financial equalization mechanism known as the Länderfinanzausgleich. This constitutional framework ensures that all states possess adequate financial resources to provide an equivalent standard of public services and infrastructure to their residents." },
+                    { type: "p", text: "Under this framework, economically powerful states with high corporate tax bases—such as Bavaria, Baden-Württemberg, and Hesse—are legally obligated to transfer a portion of their tax revenues to subsidize states with lower tax yields or higher structural costs. While this system embodies national solidarity, it remains a source of continuous political tension. Wealthier states frequently challenge the distribution algorithms in court, arguing that massive ongoing transfers penalize financial discipline and reduce the incentive for less affluent regions to reform their local economies." },
+                    { type: "apa_references", text: "" }
+                ]
+            },
+            {
+                id: 2,
+                title: "Popping a Cocktail of Supplements Every Day Might Be Doing You More Harm Than Good",
+                excerpt: "While some pills are designed to improve your health, taking vitamins and minerals in very high quantities or improper mixtures can bring serious health risks.",
+                elements: [
+                    { type: "p", text: "Taking health supplements has become an everyday ritual for millions looking to maximize their wellness. Driven by aggressive online marketing and wellness fads, many consumers swallow handfuls of pills each morning under the unverified assumption that extra nutrients naturally translate into extra health. However, clinical researchers and toxicologists are issuing urgent warnings: consuming high-strength nutrient mixtures without diagnostic medical oversight introduces severe physiological risks." },
+                    { type: "p", text: "The fundamental flaw in self-directed supplementation lies in ignoring biological limits and nutrient interactions. The human digestive tract and metabolic pathways are highly sophisticated systems evolved to process nutrients in the complex, balanced matrices found in whole foods. When exposed to isolated, chemical megadoses, these pathways become overloaded, causing biochemical conflicts that can actively damage internal organs." },
+                    { type: "h2", text: "Antagonistic Minerals: The Problem of Mixing Calcium and Iron" },
+                    { type: "p", text: "A classic example of chemical interference occurs when consumers simultaneously take high doses of calcium and iron. Calcium carbonate is widely utilized to treat indigestion or support bone density, while iron is taken to combat fatigue or anemia. However, these two minerals compete directly for the same cellular receptors during the absorption phase in the small intestine." },
+                    { type: "ul", items: [
+                        "Receptor Competition: High concentrations of calcium effectively block iron from binding to transport proteins, drastically reducing iron absorption.",
+                        "Zinc and Copper Imbalance: Prolonged intake of high-strength zinc supplements triggers the synthesis of intestinal proteins that bind to copper, trapping it inside cells and causing severe copper deficiencies.",
+                        "Optimal Spacing: Clinical guidelines state that competing minerals or volatile combinations (such as Vitamin C and Vitamin B12) must be taken at least two hours apart to guarantee bioavailability."
+                    ]},
+                    { type: "h2", text: "The Threat of Nutrient Masking and Toxicity" },
+                    { type: "p", text: "Another major clinical hazard is the masking of severe, progressive deficiencies. A primary example is the relationship between folic acid (Vitamin B9) and Vitamin B12. Many multivitamin formulas contain high amounts of folic acid, which effectively corrects the macrocytic anemia associated with a lack of B12. However, it completely fails to treat the underlying, permanent neurological damage caused by a B12 deficiency." },
+                    { type: "p", text: "As a result, an individual—particularly someone on a strict plant-based diet—might feel healthy because their blood count appears normal on standard tests, while their nervous system is undergoing silent, irreversible degradation. By the time the B12 deficiency is diagnosed, the neurological issues may be completely untreatable, illustrating the danger of unmonitored self-supplementation." },
+                    { type: "image", src: "Prototype Thesis/Images/Popping a Cocktail of Supplements Every Day Might Be Doing You More Harm Than Good/Popping a cocktail.jpg", caption: "The chemical interference of high-strength multivitamins within the human metabolic pathway. © BBC News", color: "#fca5a5", text: "[Infographic: Antagonistic Vitamin Combinations and Absorption Blocks]" },
+                    { type: "blockquote", text: "“Drug-nutrient and nutrient-nutrient combinations heavily dictate how our body processes, metabolizes, or excretes compounds. Unregulated online purchasing of high-strength fads introduces severe physiological risks.” — Expert Clinical Analysis." },
+                    { type: "h2", text: "Fat-Soluble Risks: Beyond Recommended Limits" },
+                    { type: "p", text: "While water-soluble nutrients like Vitamin C are generally excreted safely in urine when consumed in excess, fat-soluble compounds pose a direct toxic threat because they accumulate permanently in the body's fat tissues and liver. Driven by internet trends, many consumers now take extreme doses of Vitamin D3 that far exceed standard daily allowances. This chronic overconsumption can lead to severe hypercalcaemia." },
+                    { type: "p", text: "Hypercalcaemia occurs when excessive Vitamin D levels cause the body to absorb abnormal amounts of calcium from food, leading to a dangerous buildup of the mineral in the bloodstream. This toxicity manifests as persistent vomiting, muscle weakness, mental confusion, intense bone pain, and the formation of painful kidney stones. In severe cases, it can cause calcification of soft tissues, resulting in chronic heart arrhythmias and acute kidney failure. Medical professionals emphasize that unless a specific, verified clinical deficiency exists, relying on a balanced, whole-food diet remains the safest and most effective way to sustain optimal human health." },
+                    { type: "apa_references", text: "" }
+                ]
+            },
+            {
+                id: 3,
+                title: "What if Some of History's Earliest Kings Were Really Queens?",
+                excerpt: "The dramatic excavation of the ancient city-state of Ur revealed unmatched wealth, elaborate tomb appointments, and powerful religious rulers. Academics are now building a compelling case that many of these rulers were actually women.",
+                elements: [
+                    { type: "p", text: "Rising from the alluvial plains of southern Mesopotamia in modern Iraq, the ancient city-state of Ur flourished more than 4,000 years ago as a supreme epicenter of early human civilization. Its monarchs commanded vast luxury trade networks spanning from the Mediterranean to the Indus Valley, commissioned monumental step-pyramids (ziggurats), and codified complex legal frameworks. However, standard histories written over the past century have almost universally assumed that these early dynastic sovereigns were male, projecting modern biases onto ancient ruins." },
+                    { type: "p", text: "A revolutionary wave of modern archaeological analysis and cuneiform re-evaluation is thoroughly dismantling this male-centric narrative. Historians and biological anthropologists are building a compelling case that some of Mesopotamia's most powerful, wealthy, and influential absolute rulers were actually women who wielded independent sovereign command over their city-states." },
+                    { type: "h2", text: "The Theocracy of Ur and the Power of High Priestesses" },
+                    { type: "p", text: "To comprehend how women achieved supreme authority in ancient Sumer, one must examine the unique structural layout of early Mesopotamian power. Ur operated as a sophisticated theocracy where political governance and divine service were entirely inseparable. The city was believed to be the literal earthly estate of the moon god Nanna, and its human leaders ruled as direct administrative caretakers of this divine wealth." },
+                    { type: "ul", items: [
+                        "The Universal Title 'En': In early Sumerian history, the supreme executive title was 'En', representing a sovereign ruler who held total command over both state resources and religious temple hierarchies.",
+                        "Gender-Neutral Language: The ancient Sumerian language features zero grammatical gender pronouns, meaning the title 'En' was applied universally to sovereign leaders regardless of biological sex.",
+                        "Divine Marriage Vectors: Through the sacred tradition of divine marriage, the human ruler was ritually wed to the city's patron deity. For centuries, this allowed high priestesses to control vast temple estates, manage thousands of laborers, sign international treaties, and command absolute civic authority."
+                    ]},
+                    { type: "h2", text: "Queen Puabi's Opulent Legacy" },
+                    { type: "p", text: "The most undeniable archaeological proof of absolute female sovereignty was unearthed during the historic excavation of the Royal Cemetery of Ur. While the vast majority of elite tombs had been thoroughly looted over thousands of years of conflict, one magnificent tomb chamber remained entirely undisturbed: the final resting place of Queen Puabi, dating to approximately 2600 B.C." },
+                    { type: "image", src: "Prototype Thesis/Images/What if Some of History's Earliest Kings Were Really Queens/The intact tomb chamber of Queen Puab.png", caption: "The intact tomb chamber of Queen Puabi, exhibiting gold crowns, diadems, and royal cylinder seals. © National Geographic", color: "#e2e8f0", text: "[Photo Artifacts: The Golden Splendor of Ur's Royal Cemetery Precincts]" },
+                    { type: "blockquote", text: "“The question of why certain Sumerian women were buried with golden daggers, royal trappings, and human sacrifices has a direct answer: because they were kings.” — Academic Re-evaluation Report." },
+                    { type: "h2", text: "Overturning Male-Centric Archaeological Biases" },
+                    { type: "p", text: "Modern physical anthropologists are actively correcting decades of flawed data caused by early field assumptions. In the early 20th century, excavators routinely classified any skeleton found alongside bronze daggers, battleaxes, or political seals as male, while automatically categorizing bodies found with jewelry or cosmetics as female consorts. Modern DNA testing and pelvic bone analysis are revealing that many heavily armed 'warriors' and politically designated 'lords' buried in Mesopotamia were structurally female." },
+                    { type: "p", text: "This scientific correction aligns perfectly with ancient cuneiform records. Specialized royal cylinder seals—which functioned as official signatures to ratify laws and economic transactions—explicitly name Puabi without any reference to a living husband or king. Furthermore, early Sumerian king lists explicitly document women holding absolute monarchical power, including Queen Kubaba, who is recorded as having ruled the city-state of Kish for a stunning 100 years. By merging absolute economic administration with divine earthly access, the dynastic foundations of Mesopotamia provided powerful vectors for elite women to occupy the true apex of sovereign power." },
+                    { type: "apa_references", text: "" }
+                ]
+            }
+        ];
+
+        // TELEMETRY ENGINE CONTROL
+        const telemetrySession = {
+            condition_id: "Banner",
+            wtp_tier_selected: null,
+            wtp_tier_name: null,
+            wtp_tier_cost_tokens: null,
+            wtp_screen_loaded_ts: null,
+            wtp_confirmed_ts: null,
+            wtp_decision_latency_ms: null,
+            participantName: null,
+            participantEmail: null,
+            participantSignature: null,
+            sessionStartTime: null,
+            totalReadingTimeSeconds: 0,
+            timeToUpgradeSeconds: null,
+            wtpSelectedValue: null,
+            finalBehavioralOutcome: null,
+            interactionLogs: []
+        };
+
+        let activeSessionTimer = null;
+        let clockInterval = null;
+        let elapsedSeconds = 0;
+        let currentArticleId = null;
+        let biterushTimer = null;
+        
+        const SYSTEM_SESSION_LIMIT_MS = 10 * 60 * 1000; 
+
+        function init() {
+            setupDOMBindings();
+            renderHomepageFeed();
+            initSignaturePad();
+            navigateTo('consent');
+        }
+
+        if (document.readyState === 'loading') {
+            window.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+
+        function setupDOMBindings() {
+            const slider = document.getElementById('wtp-slider');
+            const display = document.getElementById('wtp-value');
+            if (slider && display) {
+                slider.addEventListener('input', (e) => {
+                    const val = parseInt(e.target.value);
+                    display.textContent = val;
+                    telemetrySession.wtpSelectedValue = val;
+                });
+            }
+            window.addEventListener('scroll', () => {
+                throttleScrollTracking();
+                handleStickyHeaderOnScroll();
+            }, { passive: true });
+
+            // Consent form handlers
+            document.getElementById('consent-name').addEventListener('input', validateConsentForm);
+            document.getElementById('consent-email').addEventListener('input', validateConsentForm);
+            document.getElementById('btn-start-experiment').addEventListener('click', startExperiment);
+        }
+
+        function handleStickyHeaderOnScroll() {
+            const header = document.querySelector('.editorial-header');
+            if (!header) return;
+            if (window.scrollY > 80) {
+                header.classList.add('is-sticky');
+            } else {
+                header.classList.remove('is-sticky');
+            }
+        }
+
+        // SIGNATURE CANVAS LOGIC
+        let isDrawing = false;
+        let signatureCanvas = null;
+        let sigCtx = null;
+        let signatureEntered = false;
+
+        function initSignaturePad() {
+            signatureCanvas = document.getElementById('signature-canvas');
+            if (!signatureCanvas) return;
+            
+            sigCtx = signatureCanvas.getContext('2d');
+            if (!sigCtx) return;
+            sigCtx.strokeStyle = '#1a202c';
+            sigCtx.lineWidth = 2.5;
+            sigCtx.lineCap = 'round';
+
+            function getMousePos(e) {
+                const rect = signatureCanvas.getBoundingClientRect();
+                const scaleX = signatureCanvas.width / rect.width;
+                const scaleY = signatureCanvas.height / rect.height;
+                
+                if (e.touches && e.touches.length > 0) {
+                    return {
+                        x: (e.touches[0].clientX - rect.left) * scaleX,
+                        y: (e.touches[0].clientY - rect.top) * scaleY
+                    };
+                }
+                return {
+                    x: (e.clientX - rect.left) * scaleX,
+                    y: (e.clientY - rect.top) * scaleY
+                };
+            }
+
+            function startDraw(e) {
+                isDrawing = true;
+                const pos = getMousePos(e);
+                sigCtx.beginPath();
+                sigCtx.moveTo(pos.x, pos.y);
+                e.preventDefault();
+            }
+
+            function draw(e) {
+                if (!isDrawing) return;
+                const pos = getMousePos(e);
+                sigCtx.lineTo(pos.x, pos.y);
+                sigCtx.stroke();
+                signatureEntered = true;
+                validateConsentForm();
+                e.preventDefault();
+            }
+
+            function stopDraw(e) {
+                isDrawing = false;
+                e.preventDefault();
+            }
+
+            // Mouse Event Listeners
+            signatureCanvas.addEventListener('mousedown', startDraw);
+            signatureCanvas.addEventListener('mousemove', draw);
+            signatureCanvas.addEventListener('mouseup', stopDraw);
+            signatureCanvas.addEventListener('mouseleave', stopDraw);
+
+            // Touch Event Listeners (Mobile & Tablet support)
+            signatureCanvas.addEventListener('touchstart', startDraw);
+            signatureCanvas.addEventListener('touchmove', draw);
+            signatureCanvas.addEventListener('touchend', stopDraw);
+
+            // Clear button handler
+            document.getElementById('btn-clear-sig').addEventListener('click', (e) => {
+                sigCtx.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+                signatureEntered = false;
+                validateConsentForm();
+            });
+        }
+
+        function validateConsentForm() {
+            // Live validation check without disabling the button
+        }
+
+        function startExperiment() {
+            try {
+                // Record consent parameters
+                const nameEl = document.getElementById('consent-name');
+                const emailEl = document.getElementById('consent-email');
+                
+                const name = nameEl ? nameEl.value.trim() : '';
+                const email = emailEl ? emailEl.value.trim() : '';
+                
+                if (name.length < 2) {
+                    alert("Please enter your full name (at least 2 characters) before starting.");
+                    return;
+                }
+                const isEmailValid = email.length >= 3 && email.includes('@');
+                if (!isEmailValid) {
+                    alert("Please enter a valid email address before starting.");
+                    return;
+                }
+                
+                telemetrySession.participantName = name;
+                telemetrySession.participantEmail = email;
+                
+                let sigData = '';
+                try {
+                    if (signatureCanvas && sigCtx) {
+                        sigData = signatureCanvas.toDataURL();
+                    }
+                } catch (canvasErr) {
+                    console.warn("Canvas toDataURL is blocked by browser security/privacy settings:", canvasErr);
+                    sigData = '[Canvas Export Blocked by Browser/Privacy Settings]';
+                }
+                telemetrySession.participantSignature = sigData;
+                
+                // Initiate timestamps and clocks
+                telemetrySession.sessionStartTime = Date.now();
+                startGlobalClock();
+                activeSessionTimer = setTimeout(triggerHardPaywall, SYSTEM_SESSION_LIMIT_MS);
+                
+                // Navigate to home state
+                navigateTo('home');
+            } catch (err) {
+                console.error("Error starting experiment:", err);
+                navigateTo('home');
+            }
+        }
+
+        function startGlobalClock() {
+            const clockDisplay = document.getElementById('global-timer-clock');
+            clockInterval = setInterval(() => {
+                elapsedSeconds++;
+                let min = Math.floor(elapsedSeconds / 60).toString().padStart(2, '0');
+                let sec = (elapsedSeconds % 60).toString().padStart(2, '0');
+                clockDisplay.textContent = `${min}:${sec}`;
+            }, 1000);
+        }
+
+        function logEvent(action, meta = {}) {
+            let relativeSec = telemetrySession.sessionStartTime 
+                ? parseFloat(((Date.now() - telemetrySession.sessionStartTime) / 1000).toFixed(1)) 
+                : 0.0;
+            telemetrySession.interactionLogs.push({
+                timestamp: Date.now(),
+                relativeSeconds: relativeSec,
+                action: action,
+                metadata: meta
+            });
+        }
+
+         function navigateTo(stateName) {
+            if (stateName !== 'reading') {
+                if (biterushTimer) {
+                    clearTimeout(biterushTimer);
+                    biterushTimer = null;
+                }
+                const biterushBanner = document.getElementById('biterush-ad-banner');
+                if (biterushBanner) {
+                    biterushBanner.classList.add('hidden');
+                    biterushBanner.classList.remove('minimized');
+                }
+                const btn = document.querySelector('.btn-biterush-close-x');
+                if (btn) btn.innerHTML = '&times;';
+            }
+            document.querySelectorAll('.app-state').forEach(el => el.classList.add('hidden'));
+            
+            // Header, Global Timer and Developer Tools components
+            const header = document.querySelector('.editorial-header');
+            const timerClock = document.querySelector('.fixed-timer-display');
+            const utilities = document.querySelector('.researcher-utility');
+            
+            if (stateName === 'consent') {
+                if (header) header.classList.add('hidden');
+                if (timerClock) timerClock.classList.add('hidden');
+                if (utilities) utilities.classList.add('hidden');
+                document.getElementById('state-consent').classList.remove('hidden');
+            } else {
+                if (header) header.classList.remove('hidden');
+                
+                if (timerClock) timerClock.classList.remove('hidden');
+                if (utilities) utilities.classList.remove('hidden');
+
+                if (stateName === 'home') {
+                    document.getElementById('state-home').classList.remove('hidden');
+                    renderSidebars('home-sidebar-left', 'home-sidebar-right');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                    logEvent('Navigate_Home');
+                } else if (stateName === 'reading') {
+                    document.getElementById('state-reading').classList.remove('hidden');
+                    renderSidebars('reading-sidebar-left', 'reading-sidebar-right');
+                } else if (stateName === 'paywall') {
+                    document.getElementById('state-paywall').classList.remove('hidden');
+                    telemetrySession.wtp_screen_loaded_ts = Date.now();
+                    logEvent('CMV_Screen_Loaded', {
+                        condition_id: telemetrySession.condition_id,
+                        loaded_ts: telemetrySession.wtp_screen_loaded_ts
+                    });
+                } else if (stateName === 'checkout') {
+                    document.getElementById('state-checkout').classList.remove('hidden');
+                    
+                    // Track time to upgrade
+                    if (telemetrySession.timeToUpgradeSeconds === null && telemetrySession.sessionStartTime) {
+                        telemetrySession.timeToUpgradeSeconds = parseFloat(((Date.now() - telemetrySession.sessionStartTime) / 1000).toFixed(1));
+                        logEvent('Upgrade_Button_Clicked', { timeToUpgradeSeconds: telemetrySession.timeToUpgradeSeconds });
+                    }
+                    
+                    goToCheckoutStep(1);
+                    logEvent('Checkout_Started');
+                }
+            }
+        }
+
+        function renderHomepageFeed() {
+            const listContainer = document.getElementById('article-list');
+            listContainer.innerHTML = '';
+            articlesConfig.forEach((art) => {
+                const card = document.createElement('div');
+                card.style.cursor = 'pointer'; card.style.marginBottom = '20px';
+                card.innerHTML = `<h3 style="font-family:serif; font-size:1.5rem; margin-bottom:5px;">${art.title}</h3><p style="font-size:0.95rem; color:#555;">${art.excerpt}</p><hr class="thin-divider">`;
+                card.onclick = () => loadArticle(art.id);
+                listContainer.appendChild(card);
+            });
+        }
+
+        function loadArticle(id) {
+            const article = articlesConfig.find(a => a.id === id);
+            if (!article) return;
+            currentArticleId = id;
+            navigateTo('reading');
+            logEvent('Article_View_Start', { articleId: id, title: article.title });
+            
+            document.getElementById('art-title').textContent = article.title;
+            const container = document.getElementById('article-body');
+            container.innerHTML = '';
+            
+            // Dynamic APA Citation Header Injection based on Article ID
+            const citationHeader = document.querySelector('.apa-citation-header');
+            if (citationHeader) {
+                if (id === 1) {
+                    citationHeader.innerHTML = `<strong>APA Methodological Citation (Source Material):</strong><br>
+                        Deutsche Welle. (2021, March 30). <em>German federalism: How does it work?</em> DW News. Explaining Germany Series.`;
+                } else if (id === 2) {
+                    citationHeader.innerHTML = `<strong>APA Methodological Citation (Source Material):</strong><br>
+                        BBC News. (2026, April 26). <em>Popping a cocktail of supplements every day might be doing you more harm than good</em>. BBC Science Focus Frameworks.`;
+                } else if (id === 3) {
+                    citationHeader.innerHTML = `<strong>APA Methodological Citation (Source Material):</strong><br>
+                        Berman, L. (2026, June 23). <em>What if some of history's earliest kings were really queens?</em> National Geographic History Series. Mesopotamia Excavation Log.`;
+                } else {
+                    citationHeader.innerHTML = `<strong>APA Methodological Citation (Source Material):</strong><br>
+                        International Olympic Committee. (2026). <em>Olympic legacy in images: understanding the lifecycle of Olympic venues</em>. IOC News. Legacy Evaluation Frameworks.`;
+                }
+            }
+            
+            article.elements.forEach((el) => {
+                if (el.type === "p") {
+                    const p = document.createElement('p'); p.textContent = el.text; container.appendChild(p);
+                } else if (el.type === "h2") {
+                    const h2 = document.createElement('h2'); h2.textContent = el.text; container.appendChild(h2);
+                } else if (el.type === "ul") {
+                    const ul = document.createElement('ul');
+                    el.items.forEach(itemText => { const li = document.createElement('li'); li.textContent = itemText; ul.appendChild(li); });
+                    container.appendChild(ul);
+                } else if (el.type === "blockquote") {
+                    const block = document.createElement('blockquote'); block.textContent = el.text; container.appendChild(block);
+                } else if (el.type === "image") {
+                    const wrap = document.createElement('div'); wrap.className = "editorial-image-wrapper";
+                    if (el.src) {
+                        const img = document.createElement('img');
+                        img.src = el.src;
+                        img.alt = el.caption || "";
+                        img.style.width = "100%";
+                        img.style.height = "auto";
+                        img.style.maxHeight = "450px";
+                        img.style.objectFit = "contain";
+                        img.style.display = "block";
+                        img.style.margin = "0 auto";
+                        wrap.appendChild(img);
+                    } else {
+                        const graphic = document.createElement('div'); graphic.className = "editorial-image-graphic"; graphic.style.backgroundColor = el.color; graphic.textContent = el.text;
+                        wrap.appendChild(graphic);
+                    }
+                    const cap = document.createElement('div'); cap.className = "editorial-image-caption"; cap.textContent = el.caption;
+                    wrap.appendChild(cap); container.appendChild(wrap);
+                } else if (el.type === "apa_references") {
+                    const footer = document.createElement('div'); footer.className = "apa-references-footer";
+                    if (id === 1) {
+                        footer.innerHTML = `<h3>References (APA 7th Edition Framework)</h3>
+                            <div class="apa-entry">Deutsche Welle. (2021, March 30). <em>German federalism: How does it work?</em> DW News. Explaining Germany Series. https://www.dw.com/en/german-federalism-how-does-it-work/a-57042552</div>`;
+                    } else if (id === 2) {
+                        footer.innerHTML = `<h3>References (APA 7th Edition Framework)</h3>
+                            <div class="apa-entry">BBC News. (2026, April 26). <em>Popping a cocktail of supplements every day might be doing you more harm than good</em>. BBC Science Focus Frameworks. Retrieved from https://www.bbc.com/news/articles/cd6e25lpwxzo</div>`;
+                    } else if (id === 3) {
+                        footer.innerHTML = `<h3>References (APA 7th Edition Framework)</h3>
+                            <div class="apa-entry">Berman, L. (2026, June 23). <em>What if some of history's earliest kings were really queens?</em> National Geographic History Series. Mesopotamia Excavation Log. https://www.nationalgeographic.com/history/article/history-earliest-kings-ur-sumeria</div>`;
+                    } else {
+                        footer.innerHTML = `<h3>References (APA 7th Edition Framework)</h3>
+                            <div class="apa-entry">International Olympic Committee. (2026, June 15). <em>Olympic legacy in images: understanding the lifecycle of Olympic venues</em>. IOC Global News. Legacy Infrastructure Evaluation Portal.</div>
+                            <div class="apa-entry">International Olympic Committee. (2024). <em>Over 125 years of Olympic venues: post-Games use</em> (3rd ed.). IOC Sustainability and Heritage Department. Technical Evaluation Reports.</div>`;
+                    }
+                    container.appendChild(footer);
+                }
+            });
+            window.scrollTo(0, 0);
+            
+            // Show premium popup ad when opening an article
+            document.getElementById('premium-popup-ad-container').classList.remove('hidden');
+            document.body.classList.add('no-scroll');
+        }
+
+        function closePremiumPopup() {
+            document.getElementById('premium-popup-ad-container').classList.add('hidden');
+            document.body.classList.remove('no-scroll');
+            logEvent('Premium_Only_PopUp_Closed');
+
+            if (currentArticleId === 3) {
+                if (biterushTimer) clearTimeout(biterushTimer);
+                biterushTimer = setTimeout(() => {
+                    if (document.getElementById('state-reading').classList.contains('hidden')) return;
+                    const biterushBanner = document.getElementById('biterush-ad-banner');
+                    if (biterushBanner) {
+                        biterushBanner.classList.remove('minimized');
+                        biterushBanner.classList.remove('hidden');
+                    }
+                    const btn = document.querySelector('.btn-biterush-close-x');
+                    if (btn) btn.innerHTML = '&times;';
+                    logEvent('BiteRush_Banner_Shown');
+                }, 1500);
+            }
+        }
+
+        function handlePremiumPopupUpgrade() {
+            document.getElementById('premium-popup-ad-container').classList.add('hidden');
+            document.body.classList.remove('no-scroll');
+            logEvent('Premium_Only_PopUp_CTA_Clicked');
+            navigateTo('paywall');
+        }
+
+        function closeBiteRushBanner() {
+            const biterushBanner = document.getElementById('biterush-ad-banner');
+            if (!biterushBanner) return;
+            const btn = document.querySelector('.btn-biterush-close-x');
+
+            if (biterushBanner.classList.contains('minimized')) {
+                // Expand back to full 50vh height
+                biterushBanner.classList.remove('minimized');
+                if (btn) {
+                    btn.innerHTML = '&times;';
+                    btn.title = "Minimize banner";
+                }
+                logEvent('BiteRush_Banner_Expanded');
+            } else {
+                // Minimize by 45% (slides down partially to 27.5vh but remains horizontally visible while reading)
+                biterushBanner.classList.add('minimized');
+                if (btn) {
+                    btn.innerHTML = '&#9650;'; // Up arrow to indicate expand option
+                    btn.title = "Expand banner";
+                }
+                logEvent('BiteRush_Banner_Minimized_45Percent');
+            }
+        }
+
+        function handleBiteRushCtaClick() {
+            logEvent('BiteRush_Banner_CTA_Clicked');
+            alert("Redirecting to BiteRush partner site securely...");
+        }
+
+        function triggerHardPaywall() {
+            clearTimeout(activeSessionTimer); clearInterval(clockInterval);
+            
+            if (telemetrySession.sessionStartTime) {
+                telemetrySession.totalReadingTimeSeconds = parseFloat(((Date.now() - telemetrySession.sessionStartTime) / 1000).toFixed(1));
+            }
+            
+            document.body.classList.remove('no-scroll'); document.body.style.overflow = '';
+            navigateTo('paywall');
+            logEvent('Hard_Paywall_Enforced');
+        }
+
+        function logConversion(decision) {
+            telemetrySession.finalBehavioralOutcome = decision;
+            logEvent('User_Final_Decision', { decision: decision, wtp: telemetrySession.wtpSelectedValue });
+            alert(`Metrics captured securely. Compiling subject session telemetry download file...`);
+            exportExperimentalData();
+        }
+
+        function exportExperimentalData() {
+            if (telemetrySession.sessionStartTime) {
+                telemetrySession.totalReadingTimeSeconds = parseFloat(((Date.now() - telemetrySession.sessionStartTime) / 1000).toFixed(1));
+            }
+            const payloadString = JSON.stringify(telemetrySession, null, 4);
+            const blob = new Blob([payloadString], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const downloader = document.createElement('a'); downloader.href = url; downloader.download = `Telemetry_SubjectSession_${Date.now()}.json`;
+            document.body.appendChild(downloader); downloader.click(); document.body.removeChild(downloader); URL.revokeObjectURL(url);
+            
+            // Automatically close the window after download
+            setTimeout(() => {
+                alert("Thank you! Your experiment session data has been exported successfully. This window will now close.");
+                window.open('', '_self', ''); 
+                window.close();
+            }, 1000);
+        }
+
+        /* =============================================
+           SIDEBAR DATA & RENDERING
+        ============================================= */
+        const sidebarArticles = [
+            { category: "Politics", title: "EU Parliament Passes Historic AI Liability Directive", meta: "June 21, 2026 · 6 min" },
+            { category: "Technology", title: "OpenAI Announces Real-Time Translation Layer for All Models", meta: "June 20, 2026 · 4 min" },
+            { category: "Economy", title: "Fed Holds Rates Amid Persistent Core Inflation Signals", meta: "June 19, 2026 · 5 min" },
+            { category: "Science", title: "CERN Reports Anomalous Muon Decay Pattern in Run 4 Data", meta: "June 18, 2026 · 7 min" },
+            { category: "Culture", title: "Cannes Palme d'Or Winner Ignites Debate on AI Authorship", meta: "June 17, 2026 · 4 min" },
+            { category: "Sports", title: "FIFA Confirms 2030 World Cup Hybrid Format Across Three Continents", meta: "June 16, 2026 · 3 min" },
+        ];
+
+        const adUnits = [
+            { label: "Advertisement", bgColor: "#0f172a", textColor: "#fff", logo: "ATLAS PRO", logoColor: "#38bdf8", tagline: "The professional research platform trusted by 40,000+ journalists worldwide.", cta: "Try Free for 14 Days", ctaBg: "#38bdf8", ctaColor: "#0f172a", animationClass: "" },
+            { label: "Sponsored", bgColor: "#f0fdf4", textColor: "#111", logo: "VeritasVPN", logoColor: "#16a34a", tagline: "Browse without borders. Zero logs, verified independently.", cta: "Secure My Connection", ctaBg: "#16a34a", ctaColor: "#fff", animationClass: "ad-unit-pulse" },
+            { label: "Advertisement", bgColor: "#fefce8", textColor: "#111", logo: "Chronicle BOOKS", logoColor: "#a16207", tagline: "Curated journalism collections. Now shipping globally.", cta: "Shop the Collection", ctaBg: "#a16207", ctaColor: "#fff", animationClass: "" },
+            { label: "Exclusive Deal", bgColor: "#fff1f2", textColor: "#9f1239", logo: "Apex Hosting", logoColor: "#f43f5e", tagline: "Scale your database architectures globally in one click. 99.999% SLA.", cta: "Get 50% Off", ctaBg: "#f43f5e", ctaColor: "#fff", animationClass: "ad-unit-glow" },
+            { label: "Sponsored", bgColor: "#ecfeff", textColor: "#155e75", logo: "Aero Logistics", logoColor: "#06b6d4", tagline: "Same-day delivery networks for advanced lab equipment and supplies.", cta: "Book Delivery", ctaBg: "#06b6d4", ctaColor: "#fff", animationClass: "" }
+        ];
+
+        function renderSidebars(leftId, rightId) {
+            const left = document.getElementById(leftId);
+            const right = document.getElementById(rightId);
+            if (left) {
+                left.innerHTML = `<div class="sidebar-section-title">More Stories</div>` +
+                    sidebarArticles.map(a => `
+                        <div class="sidebar-article-card" onclick="alert('Incorporate this text content into articlesConfig to initialize data layers.')">
+                            <div class="sac-category">${a.category}</div>
+                            <h4>${a.title}</h4>
+                            <div class="sac-meta">${a.meta}</div>
+                        </div>`).join('');
+            }
+            if (right) {
+                let html = '';
+                
+                // Render special video ad banner for specific articles (ID 1 & ID 3) in reading sidebar
+                if (rightId === 'reading-sidebar-right') {
+                    if (currentArticleId === 1) {
+                        html += `
+                        <div class="ad-unit ad-unit-glow">
+                            <div class="ad-label">Live Video Sponsor</div>
+                            <div class="ad-banner" style="background:#111; color:#fff; padding:10px; text-align:center;">
+                                <video autoplay loop muted playsinline style="width:100%; height:auto; display:block; border-radius:4px; margin-bottom:8px;">
+                                    <source src="Prototype Thesis/videos/genera_un_video_de_un_ejecutiv.mp4" type="video/mp4">
+                                    <source src="videos/genera_un_video_de_un_ejecutiv.mp4" type="video/mp4">
+                                </video>
+                                <div class="ad-logo" style="color:#38bdf8; font-size:0.95rem; font-weight:800;">GLOBAL EXECUTIVE</div>
+                                <div class="ad-tagline" style="font-size:0.72rem; color:#ccc; margin-bottom:6px;">Accelerate your leadership with real-world corporate frameworks and training panels.</div>
+                                <button class="ad-cta" style="background:#38bdf8; color:#0f172a; font-size:0.68rem; padding:6px 12px; border-radius:20px !important;">Watch Executive Panel</button>
+                            </div>
+                        </div>`;
+                    } else if (currentArticleId === 3) {
+                        html += `
+                        <div class="ad-unit ad-unit-pulse">
+                            <div class="ad-label">Live Video Sponsor</div>
+                            <div class="ad-banner" style="background:#0f172a; color:#fff; padding:10px; text-align:center;">
+                                <video autoplay loop muted playsinline style="width:100%; height:auto; display:block; border-radius:4px; margin-bottom:8px;">
+                                    <source src="Prototype Thesis/videos/un_video_de_gente_corriendo_ha.mp4" type="video/mp4">
+                                    <source src="videos/un_video_de_gente_corriendo_ha.mp4" type="video/mp4">
+                                </video>
+                                <div class="ad-logo" style="color:#4ade80; font-size:0.95rem; font-weight:800;">FITNESS FLOW</div>
+                                <div class="ad-tagline" style="font-size:0.72rem; color:#ccc; margin-bottom:6px;">Unlock active stamina with continuous live running courses and physical monitors.</div>
+                                <button class="ad-cta" style="background:#4ade80; color:#0f172a; font-size:0.68rem; padding:6px 12px; border-radius:20px !important;">Start Active Training</button>
+                            </div>
+                        </div>`;
+                    }
+                }
+
+                html += adUnits.map(ad => `
+                    <div class="ad-unit ${ad.animationClass || ''}">
+                        <div class="ad-label">${ad.label}</div>
+                        <div class="ad-banner" style="background:${ad.bgColor}; color:${ad.textColor}">
+                            <div class="ad-logo" style="color:${ad.logoColor}">${ad.logo}</div>
+                            <div class="ad-tagline">${ad.tagline}</div>
+                            <button class="ad-cta" style="background:${ad.ctaBg}; color:${ad.ctaColor}">${ad.cta}</button>
+                        </div>
+                    </div>`).join('');
+                
+                right.innerHTML = html;
+            }
+        }
+
+        /* =============================================
+           CMV TIERED STRATEGIC INCONVENIENCE RELIEF LOGIC
+        ============================================= */
+        let selectedWtpTier = null;
+
+        const TIER_METADATA = [
+            {
+                tier: 0,
+                title: "Tier 0: No Upgrade",
+                costPercent: "0% Cost",
+                tokens: 0,
+                tag: "Baseline Conditions Retained",
+                desc: "Keep current baseline conditions (retain unskippable video pop-ups and persistent banners)."
+            },
+            {
+                tier: 1,
+                title: "Tier 1: Partial Visual Relief",
+                costPercent: "25% Cost",
+                tokens: 10,
+                tag: "Persistent Bottom Banner / Interstitial Skip Relief",
+                desc: "Remove the persistent bottom banner (18% viewport) OR allow skipping the interstitial video after 5 seconds."
+            },
+            {
+                tier: 2,
+                title: "Tier 2: Functional Interruption Relief",
+                costPercent: "50% Cost",
+                tokens: 20,
+                tag: "Shutdown Penalty & Initial Banner Occlusion Relief",
+                desc: "Eliminate the critical shutdown penalty (declining the video no longer closes the platform) and reduce initial banner occlusion."
+            },
+            {
+                tier: 3,
+                title: "Tier 3: Full Premium Experience",
+                costPercent: "75%–100% Cost",
+                tokens: 50,
+                tag: "Complete Friction Removal",
+                desc: "Complete ad-free experience (zero banners, zero video pop-ups, completely uninterrupted reading flow)."
+            }
+        ];
+
+        function selectWtpTier(tierIndex) {
+            selectedWtpTier = tierIndex;
+            telemetrySession.wtp_tier_selected = tierIndex;
+            telemetrySession.wtp_tier_name = TIER_METADATA[tierIndex].title;
+            telemetrySession.wtp_tier_cost_tokens = TIER_METADATA[tierIndex].tokens;
+            telemetrySession.wtpSelectedValue = TIER_METADATA[tierIndex].tokens;
+
+            // Update radio and card visual states
+            document.querySelectorAll('.cmv-tier-card').forEach(card => {
+                const t = parseInt(card.getAttribute('data-tier'), 10);
+                const radio = card.querySelector('input[type="radio"]');
+                if (t === tierIndex) {
+                    card.classList.add('selected');
+                    if (radio) radio.checked = true;
+                } else {
+                    card.classList.remove('selected');
+                    if (radio) radio.checked = false;
+                }
+            });
+
+            const confirmBtn = document.getElementById('btn-confirm-wtp');
+            if (confirmBtn) {
+                confirmBtn.disabled = false;
+            }
+
+            logEvent('CMV_Tier_Selected', {
+                tier: tierIndex,
+                tierName: TIER_METADATA[tierIndex].title,
+                tokens: TIER_METADATA[tierIndex].tokens,
+                costPercent: TIER_METADATA[tierIndex].costPercent
+            });
+        }
+
+        function confirmWtpTierSelection() {
+            if (selectedWtpTier === null) return;
+
+            telemetrySession.wtp_confirmed_ts = Date.now();
+            if (telemetrySession.wtp_screen_loaded_ts) {
+                telemetrySession.wtp_decision_latency_ms = telemetrySession.wtp_confirmed_ts - telemetrySession.wtp_screen_loaded_ts;
+            }
+
+            const tierInfo = TIER_METADATA[selectedWtpTier];
+
+            logEvent('CMV_Tier_Confirmed', {
+                condition_id: telemetrySession.condition_id,
+                wtp_tier_selected: selectedWtpTier,
+                wtp_screen_loaded_ts: telemetrySession.wtp_screen_loaded_ts,
+                wtp_confirmed_ts: telemetrySession.wtp_confirmed_ts,
+                wtp_decision_latency_ms: telemetrySession.wtp_decision_latency_ms,
+                tierName: tierInfo.title,
+                tokens: tierInfo.tokens,
+                costPercent: tierInfo.costPercent
+            });
+
+            if (selectedWtpTier === 0) {
+                telemetrySession.finalBehavioralOutcome = 'Tier_0_Declined_No_Upgrade';
+                alert(`Selection Confirmed: ${tierInfo.title}\n\nYou selected to remain with baseline conditions (0 Tokens).\nYour valuation response and session telemetry will now be exported.`);
+                exportExperimentalData();
+            } else {
+                telemetrySession.finalBehavioralOutcome = `Tier_${selectedWtpTier}_Upgrade_Selected`;
+                updateCheckoutWithTier(tierInfo);
+                navigateTo('checkout');
+            }
+        }
+
+        function updateCheckoutWithTier(tierInfo) {
+            const planNameEl = document.getElementById('review-plan-name');
+            const billingCycleEl = document.getElementById('review-billing-cycle');
+            const subtotalEl = document.getElementById('review-subtotal');
+            const totalEl = document.getElementById('review-total');
+            const confirmPlanEl = document.getElementById('confirm-plan');
+            const confirmAmountEl = document.getElementById('confirm-amount');
+
+            if (planNameEl) planNameEl.textContent = tierInfo.title;
+            if (billingCycleEl) billingCycleEl.textContent = `${tierInfo.costPercent} (${tierInfo.tokens} tokens)`;
+            if (subtotalEl) subtotalEl.textContent = `${tierInfo.tokens} tokens`;
+            if (totalEl) totalEl.textContent = `${tierInfo.tokens} tokens`;
+            if (confirmPlanEl) confirmPlanEl.textContent = tierInfo.title;
+            if (confirmAmountEl) confirmAmountEl.textContent = `${tierInfo.tokens} tokens`;
+        }
+
+        /* =============================================
+           CHECKOUT FLOW LOGIC
+        ============================================= */
+        let selectedPlan = 'annual';
+
+        function selectPlan(plan) {
+            selectedPlan = plan;
+            document.getElementById('plan-monthly').classList.toggle('selected', plan === 'monthly');
+            document.getElementById('plan-annual').classList.toggle('selected', plan === 'annual');
+        }
+
+        function formatCardNumber(input) {
+            let v = input.value.replace(/\D/g, '').substring(0, 16);
+            input.value = v.replace(/(.{4})/g, '$1 ').trim();
+        }
+
+        function formatExpiry(input) {
+            let v = input.value.replace(/\D/g, '').substring(0, 4);
+            if (v.length >= 3) v = v.substring(0,2) + ' / ' + v.substring(2);
+            input.value = v;
+        }
+
+        function goToCheckoutStep(step) {
+            [1,2,3].forEach(n => {
+                const ind = document.getElementById('step-ind-' + n);
+                ind.classList.remove('active', 'completed');
+                if (n < step) ind.classList.add('completed');
+                else if (n === step) ind.classList.add('active');
+            });
+            document.querySelectorAll('.checkout-panel').forEach(p => p.classList.remove('active'));
+            document.getElementById('checkout-step-' + step).classList.add('active');
+
+            if (step === 2) {
+                const cardNum = document.getElementById('card-number').value.replace(/\s/g,'');
+                const last4 = cardNum.length >= 4 ? cardNum.slice(-4) : '????';
+                const email = document.getElementById('billing-email').value || '—';
+                document.getElementById('review-card-last4').textContent = last4;
+                document.getElementById('review-email').textContent = email;
+                
+                if (selectedWtpTier !== null && TIER_METADATA[selectedWtpTier]) {
+                    const t = TIER_METADATA[selectedWtpTier];
+                    document.getElementById('review-plan-name').textContent = t.title;
+                    document.getElementById('review-billing-cycle').textContent = `${t.costPercent} (${t.tokens} tokens)`;
+                    document.getElementById('review-subtotal').textContent = `${t.tokens} tokens`;
+                    document.getElementById('review-total').textContent = `${t.tokens} tokens`;
+                } else {
+                    const isAnnual = selectedPlan === 'annual';
+                    document.getElementById('review-plan-name').textContent = isAnnual ? 'Annual Premium' : 'Monthly Premium';
+                    document.getElementById('review-billing-cycle').textContent = isAnnual ? 'Yearly (420 tokens/yr)' : 'Monthly (50 tokens/mo)';
+                    document.getElementById('review-subtotal').textContent = isAnnual ? '420 tokens' : '50 tokens';
+                    document.getElementById('review-total').textContent = isAnnual ? '420 tokens' : '50 tokens';
+                }
+                logEvent('Checkout_Step2_Review');
+            }
+            if (step === 3) {
+                const email = document.getElementById('billing-email').value || 'your@email.com';
+                if (selectedWtpTier !== null && TIER_METADATA[selectedWtpTier]) {
+                    const t = TIER_METADATA[selectedWtpTier];
+                    document.getElementById('confirm-plan').textContent = t.title;
+                    document.getElementById('confirm-amount').textContent = `${t.tokens} tokens`;
+                } else {
+                    const isAnnual = selectedPlan === 'annual';
+                    document.getElementById('confirm-plan').textContent = isAnnual ? 'Annual Premium' : 'Monthly Premium';
+                    document.getElementById('confirm-amount').textContent = isAnnual ? '420 tokens' : '50 tokens';
+                }
+                document.getElementById('confirm-email').textContent = email;
+                logEvent('Checkout_Step3_Confirmed');
+            }
+            window.scrollTo(0,0);
+        }
+
+        let scrollThrottleTimeout = null;
+        function throttleScrollTracking() {
+            if (scrollThrottleTimeout) return;
+            scrollThrottleTimeout = setTimeout(() => {
+                const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+                const currentProgress = docHeight > 0 ? (window.scrollY / docHeight) * 100 : 0;
+                if (currentProgress > 5 && !document.getElementById('state-reading').classList.contains('hidden')) { logEvent('Scroll_Depth_Marker', { depthPercent: Math.round(currentProgress) }); }
+                scrollThrottleTimeout = null;
+            }, 1200);
+        }
+    </script>
+</body>
+</html>
